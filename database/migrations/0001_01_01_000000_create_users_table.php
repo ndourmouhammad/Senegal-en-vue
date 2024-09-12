@@ -16,7 +16,16 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->enum('genre', ['Homme', 'Femme']);
+            $table->date('date_naissance')->nullable();
+            $table->string('telephone');
             $table->string('password');
+            $table->string('adresse');
+            $table->string('photo_profil');
+            $table->integer('note')->nullable();
+            $table->string('langues')->nullable();
+            $table->integer('numero_carte_guide')->nullable();
+            $table->integer('carte_guide')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
