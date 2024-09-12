@@ -21,6 +21,10 @@ return new class extends Migration
             $table->integer('tarif_entree');
             // cle etrangere de activites
             $table->foreignId('activite_id')->constrained('activites')->onDelete('cascade')->onUpdate('cascade');
+            // cle etrangere de regions
+            $table->foreignId('region_id')->constrained('regions')->onDelete('cascade')->onUpdate('cascade');
+            // cle etrangere de user
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

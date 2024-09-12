@@ -25,7 +25,8 @@ return new class extends Migration
             $table->integer('note')->nullable();
             $table->string('langues')->nullable();
             $table->integer('numero_carte_guide')->nullable();
-            $table->integer('carte_guide')->nullable();
+            $table->string('carte_guide')->nullable();
+            $table->boolean('statut');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -8,4 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 class Evenement extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    // Les relations entre les autres models
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
+
+    public function categorie()
+    {
+        return $this->belongsTo(Categorie::class);
+    }
+
+    public function site_touristique()
+    {
+        return $this->belongsTo(SiteTouristique::class);
+    }
 }
