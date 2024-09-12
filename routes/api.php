@@ -32,8 +32,8 @@ Route::post('/permission/{id}', [PermissionController::class, 'modifierPermissio
 Route::delete('/permission/{id}', [PermissionController::class, 'supprimerPermission']);
 
 // Roles
-Route::get('/roles', [RoleController::class, 'index'])->middleware('permission:lister_roles');
-Route::post('/roles', [RoleController::class, 'store'])->middleware('permission:ajouter_role');
-Route::post('/roles/{id}', [RoleController::class, 'update'])->middleware('permission:modifier_role');
-Route::delete('/roles/{id}', [RoleController::class, 'destroy'])->middleware('permission:supprimer_role');
-Route::post('/roles/{id}/permission', [RoleController::class, 'givePermissions'])->middleware('permission:ajouter_permission');
+Route::get('/roles', [RoleController::class, 'roles']);
+Route::post('/roles', [RoleController::class, 'ajouterRole']);
+Route::post('/roles/{id}', [RoleController::class, 'modifierRole']);
+Route::delete('/roles/{id}', [RoleController::class, 'supprimerRole']);
+Route::post('/roles/{id}/permission', [RoleController::class, 'givePermissions']);

@@ -95,5 +95,7 @@ public function getCarteUrlAttribute()
 {
     return $this->carte_guide ? asset('storage/cartes/' . str_replace('public/', '', $this->carte_guide)) : null;
 }
+
+
     
 }

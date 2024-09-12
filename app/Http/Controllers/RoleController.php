@@ -9,21 +9,21 @@ use Illuminate\Support\Facades\Validator;
 class RoleController extends Controller
 {
     //lister les roles dans mon api
-    public function index()
+    public function roles()
     {
         $roles = Role::all();
         return $this->customJsonResponse('List des roles', $roles);
     }
 
     // creer un role dans mon api
-    public function store(Request $request)
+    public function ajouterRole(Request $request)
     {
         $role = Role::create(['name' => $request->name]);
         return $this->customJsonResponse('Le role a bien été crée', $role);
     }
 
     // supprimer un role dans mon api
-    public function destroy($id)
+    public function supprimerRole($id)
     {
         $role = Role::find($id);
         
@@ -39,7 +39,7 @@ class RoleController extends Controller
     }
 
     // modifier un role dans mon api
-    public function update(Request $request, $id)
+    public function modifierRole(Request $request, $id)
     {
         $role = Role::find($id);
         $role->name = $request->name;
