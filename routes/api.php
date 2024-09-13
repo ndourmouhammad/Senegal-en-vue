@@ -11,6 +11,7 @@ use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\EvenementController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\CommentaireController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SiteTouristiqueController;
 
 Route::get('/user', function (Request $request) {
@@ -72,3 +73,10 @@ Route::get('/sites/{siteId}/activities', [SiteTouristiqueController::class, 'get
 // Evenement
 Route::post('/evenements/{id}', [EvenementController::class, 'update']);
 Route::apiResource('/evenements', EvenementController::class)->only(['index', 'show', 'store', 'destroy']);
+
+// Reservation
+Route::post('evenements/{id}/reservation', [ReservationController::class, 'reserver']);
+Route::get('mes-reservations', [ReservationController::class, 'mesReservations']);
+Route::get('evenements/{id}/reservations', [ReservationController::class, 'reservationsEvenement']);
+Route::post('reservations/{id}/confirmer', [ReservationController::class, 'confirmerReservation']);
+Route::post('reservations/{id}/refuser', [ReservationController::class, 'refuserReservation']);
