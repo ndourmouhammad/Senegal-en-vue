@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
-use App\Models\Article;
 
 class ArticleController extends Controller
 {
@@ -13,7 +14,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        //
+        $articles = Article::all();
+        return $this->customJsonResponse('List des articles', $articles);
     }
 
     /**
@@ -29,7 +31,16 @@ class ArticleController extends Controller
      */
     public function store(StoreArticleRequest $request)
     {
-        //
+        $article = new Article();
+        $article->fill($request->validated());
+
+        if($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('public/articles');
+            $article->image = str_replace('public/', '', $imagePath);
+        }
+
+        $article->save();
+        return $this->customJsonResponse('Article ajoute', $article);
     }
 
     /**
@@ -51,16 +62,30 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateArticleRequest $request, Article $article)
+    public function update(UpdateArticleRequest $request, $id)
     {
-        //
+        $article = Article::findOrfail($id);
+        $article->fill($request->validated());
+
+        if ($request->hasFile('contenu')) {
+            if ($article->contenu) {
+                Storage::delete($article->contenu);
+            }
+            $contenuPath = $request->file('contenu')->store('public/articles');
+            $article->contenu = str_replace('public/', '', $contenuPath);
+        }
+
+        $article->update();
+        return $this->customJsonResponse('Activite modifié', $article);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Article $article)
+    public function destroy($id)
     {
-        //
+        $article = Article::findOrFail($id);
+    $article->delete();
+    return $this->customJsonResponse('Catégorie supprimée', $article);
     }
 }
