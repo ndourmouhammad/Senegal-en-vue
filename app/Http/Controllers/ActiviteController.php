@@ -64,19 +64,19 @@ class ActiviteController extends Controller
      */
     public function update(UpdateActiviteRequest $request, $id)
     {
-        $region = Activite::findOrfail($id);
-        $region->fill($request->validated());
+        $article = Activite::findOrfail($id);
+        $article->fill($request->validated());
 
         if ($request->hasFile('contenu')) {
-            if ($region->contenu) {
-                Storage::delete($region->contenu);
+            if ($article->contenu) {
+                Storage::delete($article->contenu);
             }
             $contenuPath = $request->file('contenu')->store('public/activites');
-            $region->contenu = str_replace('public/', '', $contenuPath);
+            $article->contenu = str_replace('public/', '', $contenuPath);
         }
 
-        $region->update();
-        return $this->customJsonResponse('Activite modifié', $region);
+        $article->update();
+        return $this->customJsonResponse('Activite modifié', $article);
     }
 
     /**

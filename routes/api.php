@@ -49,3 +49,7 @@ Route::apiResource('/activites', \App\Http\Controllers\ActiviteController::class
 // Categorie
 Route::post('/categories/{id}', [\App\Http\Controllers\CategorieController::class, 'update']);
 Route::apiResource('/categories', \App\Http\Controllers\CategorieController::class)->only(['index', 'store', 'destroy']);
+
+// Article
+Route::post('/articles/{id}', [\App\Http\Controllers\ArticleController::class, 'update']);
+Route::apiResource('/articles', \App\Http\Controllers\ArticleController::class)->only(['index', 'store', 'destroy']);

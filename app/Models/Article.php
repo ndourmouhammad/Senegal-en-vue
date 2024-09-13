@@ -9,6 +9,8 @@ class Article extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     // Les relations entre les autres models
     public function commentaires()
     {
