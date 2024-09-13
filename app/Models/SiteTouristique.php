@@ -34,4 +34,9 @@ class SiteTouristique extends Model
     {
         return $this->belongsTo(User::class);
     }
+    
+    public function evenements()
+    {
+        return $this->hasMany(Evenement::class, 'site_touristique_id');
+    }
 }

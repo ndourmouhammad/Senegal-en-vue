@@ -4,13 +4,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\SiteTouristiqueController;
-use App\Http\Controllers\ActiviteController;
-use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\CommentaireController;
 use App\Http\Controllers\RegionController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ActiviteController;
 use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\EvenementController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\CommentaireController;
+use App\Http\Controllers\SiteTouristiqueController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -61,9 +62,13 @@ Route::apiResource('/articles', ArticleController::class)->only(['index', 'store
 
 // Site Touristique
 Route::post('/sites/{id}', [SiteTouristiqueController::class, 'update']);
-Route::apiResource('/sites', SiteTouristiqueController::class)->only(['index', 'store', 'destroy']);
+Route::apiResource('/sites', SiteTouristiqueController::class)->only(['index', 'show', 'store', 'destroy']);
 
 // Liaison entre site et activite
 Route::post('/sites/{siteId}/activities/{activityId}', [SiteTouristiqueController::class, 'addActivityToSite']);
 Route::delete('/sites/{siteId}/activities/{activityId}', [SiteTouristiqueController::class, 'removeActivityFromSite']);
 Route::get('/sites/{siteId}/activities', [SiteTouristiqueController::class, 'getActivitiesOfSite']);
+
+// Evenement
+Route::post('/evenements/{id}', [EvenementController::class, 'update']);
+Route::apiResource('/evenements', EvenementController::class)->only(['index', 'show', 'store', 'destroy']);
