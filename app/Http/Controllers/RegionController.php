@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use FFI;
+use App\Models\Region;
+use Illuminate\Support\Facades\File;
 use App\Http\Requests\StoreRegionRequest;
 use App\Http\Requests\UpdateRegionRequest;
-use App\Models\Region;
 
 class RegionController extends Controller
 {
@@ -13,7 +15,8 @@ class RegionController extends Controller
      */
     public function index()
     {
-        //
+        $regions = Region::all();
+        return $this->customJsonResponse('List des regions', $regions);
     }
 
     /**
@@ -29,7 +32,16 @@ class RegionController extends Controller
      */
     public function store(StoreRegionRequest $request)
     {
-        //
+        $region = new Region();
+        $region->fill($request->validated());
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('public/photos_regions');
+            $region->image = str_replace('public/', '', $imagePath);
+        }
+
+        $region->save();
+        return $this->customJsonResponse('Region ajoute', $region);
     }
 
     /**
@@ -51,9 +63,25 @@ class RegionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRegionRequest $request, Region $region)
+    public function update(UpdateRegionRequest $request, $id)
     {
-        //
+        $region = Region::findOrfail($id);
+        $region->fill($request->validated());
+        
+        // supprimer avant d'enregistrer une nouvelle image
+        if ($request->hasFile('image')) {
+            if(File::exists(public_path($region->image))){
+                File::delete(public_path($region->image));
+            }
+
+            $imagePath = $request->file('image')->store('public/photos_regions');
+            $region->image = str_replace('public/', '', $imagePath);
+        }
+
+
+        $region->update();
+        return $this->customJsonResponse('Region modifié', $region);
+
     }
 
     /**
@@ -61,6 +89,8 @@ class RegionController extends Controller
      */
     public function destroy(Region $region)
     {
-        //
+        $region = Region::findOrfail($region->id);
+        $region->delete();
+        return $this->customJsonResponse('Region supprimé', $region);
     }
 }
