@@ -48,9 +48,13 @@ class SiteTouristiqueController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(SiteTouristique $siteTouristique)
+    public function show($id)
     {
-        //
+        $site = SiteTouristique::findOrfail($id);
+        if (!$site) {
+            return response()->json(['message' => 'Site non trouvé'], 404);
+        }   
+        return $this->customJsonResponse('Site', $site);
     }
 
     /**

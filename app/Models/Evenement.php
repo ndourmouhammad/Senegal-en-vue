@@ -22,8 +22,9 @@ class Evenement extends Model
         return $this->belongsTo(Categorie::class);
     }
 
-    public function site_touristique()
+    public function siteTouristique()
     {
-        return $this->belongsTo(SiteTouristique::class);
+        return $this->belongsTo(SiteTouristique::class, 'site_touristique_id');
     }
+
 }
