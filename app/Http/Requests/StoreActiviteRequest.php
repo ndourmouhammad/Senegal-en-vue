@@ -25,7 +25,7 @@ class StoreActiviteRequest extends FormRequest
     return [
         'libelle' => 'required|string|max:255',
         'description' => 'required|string|max:255',
-        'contenu' => 'required|file|mimetypes:image/jpeg,image/png,video/mp4,video/quicktime|max:10240',
+        'contenu' => 'required|file|mimetypes:image/jpeg,image/png,video/mp4,video/quicktime|max:50480',
     ];
 }
 

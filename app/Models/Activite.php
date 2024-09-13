@@ -11,8 +11,13 @@ class Activite extends Model
 
     protected $fillable = ['libelle', 'description', 'contenu'];
     
-    public function sites_touristiques()
+    
+
+    protected $table = 'activites'; // Nom de la table si différent
+
+    // La méthode pour définir la relation many-to-many avec SiteTouristique
+    public function sitesTouristiques()
     {
-        return $this->belongsToMany(SiteTouristique::class);
+        return $this->belongsToMany(SiteTouristique::class, 'site_touristique_activite', 'activite_id', 'site_touristique_id');
     }
 }
