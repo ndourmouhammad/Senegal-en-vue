@@ -37,3 +37,7 @@ Route::post('/roles', [RoleController::class, 'ajouterRole']);
 Route::post('/roles/{id}', [RoleController::class, 'modifierRole']);
 Route::delete('/roles/{id}', [RoleController::class, 'supprimerRole']);
 Route::post('/roles/{id}/permission', [RoleController::class, 'givePermissions']);
+
+// Region 
+Route::post('/regions/{id}', [\App\Http\Controllers\RegionController::class, 'update']);
+Route::apiResource('/regions', \App\Http\Controllers\RegionController::class)->only(['index', 'store', 'destroy']);
