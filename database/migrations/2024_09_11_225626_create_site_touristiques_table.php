@@ -19,8 +19,6 @@ return new class extends Migration
             $table->time('heure_ouverture');
             $table->time('heure_fermeture');
             $table->integer('tarif_entree');
-            // cle etrangere de activites
-            $table->foreignId('activite_id')->constrained('activites')->onDelete('cascade')->onUpdate('cascade');
             // cle etrangere de regions
             $table->foreignId('region_id')->constrained('regions')->onDelete('cascade')->onUpdate('cascade');
             // cle etrangere de user
