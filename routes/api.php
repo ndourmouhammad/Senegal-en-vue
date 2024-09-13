@@ -45,3 +45,7 @@ Route::apiResource('/regions', \App\Http\Controllers\RegionController::class)->o
 // Activite
 Route::post('/activites/{id}', [\App\Http\Controllers\ActiviteController::class, 'update']);
 Route::apiResource('/activites', \App\Http\Controllers\ActiviteController::class)->only(['index', 'store', 'destroy']);
+
+// Categorie
+Route::post('/categories/{id}', [\App\Http\Controllers\CategorieController::class, 'update']);
+Route::apiResource('/categories', \App\Http\Controllers\CategorieController::class)->only(['index', 'store', 'destroy']);

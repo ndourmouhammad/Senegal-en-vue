@@ -13,7 +13,8 @@ class CategorieController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Categorie::all();
+        return $this->customJsonResponse('List des categories', $categories);
     }
 
     /**
@@ -29,7 +30,10 @@ class CategorieController extends Controller
      */
     public function store(StoreCategorieRequest $request)
     {
-        //
+        $categorie = new Categorie();
+        $categorie->fill($request->validated());
+        $categorie->save();
+        return $this->customJsonResponse('Categorie ajoute', $categorie);
     }
 
     /**
@@ -51,16 +55,23 @@ class CategorieController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategorieRequest $request, Categorie $categorie)
+    public function update(UpdateCategorieRequest $request, $id)
     {
-        //
+        $categorie = Categorie::findOrfail($id);
+        $categorie->fill($request->validated());
+        $categorie->save();
+        return $this->customJsonResponse('Categorie modifié', $categorie);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Categorie $categorie)
-    {
-        //
-    }
+    public function destroy($id)
+{
+    $categorie = Categorie::findOrFail($id);
+    $categorie->delete();
+    return $this->customJsonResponse('Catégorie supprimée', $categorie);
+}
+
+
 }
