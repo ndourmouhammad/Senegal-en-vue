@@ -41,3 +41,7 @@ Route::post('/roles/{id}/permission', [RoleController::class, 'givePermissions']
 // Region 
 Route::post('/regions/{id}', [\App\Http\Controllers\RegionController::class, 'update']);
 Route::apiResource('/regions', \App\Http\Controllers\RegionController::class)->only(['index', 'store', 'destroy']);
+
+// Activite
+Route::post('/activites/{id}', [\App\Http\Controllers\ActiviteController::class, 'update']);
+Route::apiResource('/activites', \App\Http\Controllers\ActiviteController::class)->only(['index', 'store', 'destroy']);

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activite;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreActiviteRequest;
 use App\Http\Requests\UpdateActiviteRequest;
-use App\Models\Activite;
 
 class ActiviteController extends Controller
 {
@@ -13,7 +14,8 @@ class ActiviteController extends Controller
      */
     public function index()
     {
-        //
+        $activites = Activite::all();
+        return $this->customJsonResponse('List des activites', $activites);
     }
 
     /**
@@ -29,7 +31,16 @@ class ActiviteController extends Controller
      */
     public function store(StoreActiviteRequest $request)
     {
-        //
+        $activite = new Activite();
+        $activite->fill($request->validated());
+
+        if ($request->hasFile('contenu')) {
+            $contenuPath = $request->file('contenu')->store('public/activites');
+            $activite->contenu = str_replace('public/', '', $contenuPath);
+        }
+
+        $activite->save();
+        return $this->customJsonResponse('Activite ajoute', $activite);
     }
 
     /**
@@ -51,9 +62,21 @@ class ActiviteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateActiviteRequest $request, Activite $activite)
+    public function update(UpdateActiviteRequest $request, $id)
     {
-        //
+        $region = Activite::findOrfail($id);
+        $region->fill($request->validated());
+
+        if ($request->hasFile('contenu')) {
+            if ($region->contenu) {
+                Storage::delete($region->contenu);
+            }
+            $contenuPath = $request->file('contenu')->store('public/activites');
+            $region->contenu = str_replace('public/', '', $contenuPath);
+        }
+
+        $region->update();
+        return $this->customJsonResponse('Activite modifié', $region);
     }
 
     /**
@@ -61,6 +84,8 @@ class ActiviteController extends Controller
      */
     public function destroy(Activite $activite)
     {
-        //
+        $activite = Activite::findOrfail($activite->id);
+        $activite->delete();
+        return $this->customJsonResponse('Activite supprimé', $activite);
     }
 }
