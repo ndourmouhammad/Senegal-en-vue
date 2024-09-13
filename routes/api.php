@@ -5,7 +5,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
-
+use App\Http\Controllers\SiteTouristiqueController;
+use App\Http\Controllers\ActiviteController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CommentaireController;
+use App\Http\Controllers\RegionController;
+use App\Http\Controllers\CategorieController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -39,17 +44,26 @@ Route::delete('/roles/{id}', [RoleController::class, 'supprimerRole']);
 Route::post('/roles/{id}/permission', [RoleController::class, 'givePermissions']);
 
 // Region 
-Route::post('/regions/{id}', [\App\Http\Controllers\RegionController::class, 'update']);
-Route::apiResource('/regions', \App\Http\Controllers\RegionController::class)->only(['index', 'store', 'destroy']);
+Route::post('/regions/{id}', [RegionController::class, 'update']);
+Route::apiResource('/regions', RegionController::class)->only(['index', 'store', 'destroy']);
 
 // Activite
-Route::post('/activites/{id}', [\App\Http\Controllers\ActiviteController::class, 'update']);
-Route::apiResource('/activites', \App\Http\Controllers\ActiviteController::class)->only(['index', 'store', 'destroy']);
+Route::post('/activites/{id}', [ActiviteController::class, 'update']);
+Route::apiResource('/activites', ActiviteController::class)->only(['index', 'store', 'destroy']);
 
 // Categorie
-Route::post('/categories/{id}', [\App\Http\Controllers\CategorieController::class, 'update']);
-Route::apiResource('/categories', \App\Http\Controllers\CategorieController::class)->only(['index', 'store', 'destroy']);
+Route::post('/categories/{id}', [CategorieController::class, 'update']);
+Route::apiResource('/categories', CategorieController::class)->only(['index', 'store', 'destroy']);
 
 // Article
-Route::post('/articles/{id}', [\App\Http\Controllers\ArticleController::class, 'update']);
-Route::apiResource('/articles', \App\Http\Controllers\ArticleController::class)->only(['index', 'store', 'destroy']);
+Route::post('/articles/{id}', [ArticleController::class, 'update']);
+Route::apiResource('/articles', ArticleController::class)->only(['index', 'store', 'destroy']);
+
+// Site Touristique
+Route::post('/sites/{id}', [SiteTouristiqueController::class, 'update']);
+Route::apiResource('/sites', SiteTouristiqueController::class)->only(['index', 'store', 'destroy']);
+
+// Liaison entre site et activite
+Route::post('/sites/{siteId}/activities/{activityId}', [SiteTouristiqueController::class, 'addActivityToSite']);
+Route::delete('/sites/{siteId}/activities/{activityId}', [SiteTouristiqueController::class, 'removeActivityFromSite']);
+Route::get('/sites/{siteId}/activities', [SiteTouristiqueController::class, 'getActivitiesOfSite']);

@@ -12,9 +12,12 @@ class SiteTouristique extends Model
     protected $guarded = [];
 
     // Les relations entre les autres models
-    public function activites()
+    protected $table = 'site_touristiques'; // Nom de la table si différent
+
+    // La méthode pour définir la relation many-to-many avec Activite
+    public function activities()
     {
-        return $this->belongsToMany(Activite::class);
+        return $this->belongsToMany(Activite::class, 'site_touristique_activite', 'site_touristique_id', 'activite_id');
     }
 
     public function region()
