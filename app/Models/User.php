@@ -96,6 +96,16 @@ public function getCarteUrlAttribute()
     return $this->carte_guide ? asset('storage/cartes/' . str_replace('public/', '', $this->carte_guide)) : null;
 }
 
+// Les abonnements en tant que touriste (abonnements créés par ce user)
+public function subscriptionsAsTourist()
+{
+    return $this->hasMany(Abonnement::class, 'touriste_id');
+}
 
+// Les abonnements en tant que guide (abonnements reçus par ce user)
+public function subscriptionsAsGuide()
+{
+    return $this->hasMany(Abonnement::class, 'guide_id');
+}
     
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AbonnementController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -96,3 +97,19 @@ Route::get('mes-commandes', [CommandeController::class, 'mesCommandes']);
 Route::get('sites/{id}/commandes', [CommandeController::class, 'commandesSites']);
 Route::post('commandes/{id}/confirmer', [CommandeController::class, 'confirmerCommande']);
 Route::post('commandes/{id}/refuser', [CommandeController::class, 'refuserCommande']);
+
+// Abonnement
+Route::middleware('auth:api')->group(function () {
+    // Route pour qu'un touriste demande un abonnement à un guide
+    Route::post('subscribe/{guideId}', [AbonnementController::class, 'subscribeToGuide']);
+
+    // Route pour qu'un guide accepte ou rejette une demande
+    Route::post('subscriptions/{subscriptionId}/respond/{status}', [AbonnementController::class, 'respondToSubscription']);
+
+
+    // Route pour afficher les demandes reçues par le guide
+    Route::get('subscriptions/received', [AbonnementController::class, 'getReceivedSubscriptions']);
+
+    // Route pour afficher les demandes envoyées par le touriste
+    Route::get('subscriptions/sent', [AbonnementController::class, 'getSentSubscriptions']);
+});
