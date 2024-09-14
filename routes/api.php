@@ -8,6 +8,7 @@ use App\Http\Controllers\RegionController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ActiviteController;
 use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\EvenementController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\CommentaireController;
@@ -80,3 +81,10 @@ Route::get('mes-reservations', [ReservationController::class, 'mesReservations']
 Route::get('evenements/{id}/reservations', [ReservationController::class, 'reservationsEvenement']);
 Route::post('reservations/{id}/confirmer', [ReservationController::class, 'confirmerReservation']);
 Route::post('reservations/{id}/refuser', [ReservationController::class, 'refuserReservation']);
+
+// Commande
+Route::post('sites/{id}/commande', [CommandeController::class, 'commander']);
+Route::get('mes-commandes', [CommandeController::class, 'mesCommandes']);
+Route::get('sites/{id}/commandes', [CommandeController::class, 'commandesSites']);
+Route::post('commandes/{id}/confirmer', [CommandeController::class, 'confirmerCommande']);
+Route::post('commandes/{id}/refuser', [CommandeController::class, 'refuserCommande']);
