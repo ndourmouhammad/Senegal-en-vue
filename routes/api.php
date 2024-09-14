@@ -62,6 +62,14 @@ Route::apiResource('/categories', CategorieController::class)->only(['index', 's
 Route::post('/articles/{id}', [ArticleController::class, 'update']);
 Route::apiResource('/articles', ArticleController::class)->only(['index', 'store', 'destroy']);
 
+// Commentaire
+Route::prefix('articles/{id}')->group(function () {
+    Route::get('commentaires', [CommentaireController::class, 'index']);
+    Route::post('commentaires', [CommentaireController::class, 'store']);
+    Route::post('commentaires/{commentaire}', [commentaireController::class, 'update']);
+    Route::delete('commentaires/{commentaire}', [CommentaireController::class, 'destroy']);
+});
+
 // Site Touristique
 Route::post('/sites/{id}', [SiteTouristiqueController::class, 'update']);
 Route::apiResource('/sites', SiteTouristiqueController::class)->only(['index', 'show', 'store', 'destroy']);
