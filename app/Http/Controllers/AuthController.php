@@ -214,5 +214,23 @@ public function user($id)
       $user->save();
       return $this->customJsonResponse('Utilisateur desactive', $user);
   } 
+
+  // Nombre de user avec le role guide
+  public function countGuide()
+  {
+    $guides = User::whereHas('roles', function ($query) {
+        $query->where('name', 'guide');
+    })->count();
+    return $this->customJsonResponse('Nombre de guides', $guides);
+  }
+
+  // Nombre de user avec le role touriste
+  public function countTouriste()
+  {
+    $touristes = User::whereHas('roles', function ($query) {
+        $query->where('name', 'touriste');
+    })->count();
+    return $this->customJsonResponse('Nombre de touristes', $touristes);
+  }
 }
  

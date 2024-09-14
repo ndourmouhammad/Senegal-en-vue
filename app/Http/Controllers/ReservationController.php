@@ -73,131 +73,131 @@ class ReservationController extends Controller
     }
 
     public function reserver(Request $request, $evenement_id)
-{
-    // Vérifier si l'utilisateur a déjà réservé pour cet événement
-    $existingReservation = Reservation::where('evenement_id', $evenement_id)
-                                       ->where('user_id', auth()->id())
-                                       ->first();
+    {
+        // Vérifier si l'utilisateur a déjà réservé pour cet événement
+        $existingReservation = Reservation::where('evenement_id', $evenement_id)
+            ->where('user_id', auth()->id())
+            ->first();
 
-    if ($existingReservation) {
+        if ($existingReservation) {
+            return response()->json([
+                "status" => false,
+                "message" => "Vous avez déjà réservé pour cet événement.",
+            ], 400);
+        }
+
+        // Récupérer l'événement pour vérifier le nombre de places disponibles
+        $evenement = Evenement::find($evenement_id);
+
+        if (!$evenement) {
+            return response()->json([
+                "status" => false,
+                "message" => "Événement non trouvé.",
+            ], 404);
+        }
+
+        // Vérifier s'il y a des places disponibles
+        if ($evenement->nombre_participant <= 0) {
+            return response()->json([
+                "status" => false,
+                "message" => "Aucune place disponible pour cet événement.",
+            ], 400);
+        }
+
+        // Valider la requête
+        $validatedData = Validator::make($request->all(), [
+            'statut' => 'nullable|in:en cours,termine,refuse',
+        ]);
+
+        if ($validatedData->fails()) {
+            return response()->json([
+                "status" => false,
+                "message" => "Erreur de validation",
+                "data" => $validatedData->errors()
+            ], 400);
+        }
+
+        // Récupérer le statut validé ou définir une valeur par défaut
+        $validated = $validatedData->validated();
+        $validated['statut'] = $validated['statut'] ?? 'en cours';
+
+        // Préparer les données pour la création
+        $data = [
+            'evenement_id' => $evenement_id,
+            'user_id' => auth::id(),
+            'statut' => $validated['statut'],
+            'date_reservation' => now(),
+            'heure_reservation' => now(),
+        ];
+
+        // Créer la réservation
+        $reservation = Reservation::create($data);
+
+        // Déduire le nombre de places disponibles
+        $evenement->nombre_participant -= 1;
+        $evenement->save();
+
+        // Envoyer une notification par email à l'utilisateur
+        Mail::to($reservation->user->email)->send(new ReservationNotification($reservation));
+
         return response()->json([
-            "status" => false,
-            "message" => "Vous avez déjà réservé pour cet événement.",
-        ], 400);
+            "status" => true,
+            "message" => "Réservation ajoutée avec succès",
+            "data" => $reservation
+        ], 201);
     }
 
-    // Récupérer l'événement pour vérifier le nombre de places disponibles
-    $evenement = Evenement::find($evenement_id);
+    public function mesReservations()
+    {
+        $reservations = Reservation::with('evenement')
+            ->where('user_id', auth()->id())
+            ->get();
 
-    if (!$evenement) {
         return response()->json([
-            "status" => false,
-            "message" => "Événement non trouvé.",
-        ], 404);
+            'status' => true,
+            'message' => "Réservations affichées avec succès",
+            'data' => $reservations
+        ], 200);
     }
 
-    // Vérifier s'il y a des places disponibles
-    if ($evenement->nombre_participant <= 0) {
-        return response()->json([
-            "status" => false,
-            "message" => "Aucune place disponible pour cet événement.",
-        ], 400);
+    public function reservationsEvenement($evenement_id)
+    {
+        $reservations = Reservation::where('evenement_id', $evenement_id)
+            ->whereIn('statut', ['termine', 'en cours']) // Filtrer par statut
+            ->with('user:id,name,email,telephone') // Inclure seulement l'id et le nom de l'utilisateur
+            ->get();
+
+        return response()->json($reservations, 200);
     }
 
-    // Valider la requête
-    $validatedData = Validator::make($request->all(), [
-        'statut' => 'nullable|in:en cours,termine,refuse',
-    ]);
+    public function confirmerReservation($reservation_id)
+    {
+        // Find the reservation by its ID
+        $reservation = Reservation::findOrFail($reservation_id);
 
-    if ($validatedData->fails()) {
+        // Check if the reservation status is 'en_attente'
+        if ($reservation->statut !== 'en cours') {
+            return response()->json([
+                "status" => false,
+                "message" => "La réservation ne peut être confirmée car elle n'est pas en attente."
+            ], 400);
+        }
+
+        // Update the status to 'accepte'
+        $reservation->statut = 'termine';
+        $reservation->save();
+
+        // Notify the user
+        Mail::to($reservation->user->email)->send(new ReservationAccepted($reservation));
+
         return response()->json([
-            "status" => false,
-            "message" => "Erreur de validation",
-            "data" => $validatedData->errors()
-        ], 400);
+            "status" => true,
+            "message" => "Réservation confirmée avec succès.",
+            "data" => $reservation
+        ], 200);
     }
 
-    // Récupérer le statut validé ou définir une valeur par défaut
-    $validated = $validatedData->validated();
-    $validated['statut'] = $validated['statut'] ?? 'en cours';
-
-    // Préparer les données pour la création
-    $data = [
-        'evenement_id' => $evenement_id,
-        'user_id' => auth::id(),
-        'statut' => $validated['statut'],
-        'date_reservation' => now(),
-        'heure_reservation' => now(),
-    ];
-
-    // Créer la réservation
-    $reservation = Reservation::create($data);
-
-    // Déduire le nombre de places disponibles
-    $evenement->nombre_participant -= 1;
-    $evenement->save();
-
-    // Envoyer une notification par email à l'utilisateur
-    Mail::to($reservation->user->email)->send(new ReservationNotification($reservation));
-
-    return response()->json([
-        "status" => true,
-        "message" => "Réservation ajoutée avec succès",
-        "data" => $reservation
-    ], 201);
-}
-
-public function mesReservations()
-{
-    $reservations = Reservation::with('evenement')
-        ->where('user_id', auth()->id())
-        ->get();
-
-    return response()->json([
-        'status' => true,
-        'message' => "Réservations affichées avec succès",
-        'data' => $reservations
-    ], 200);
-}
-
-public function reservationsEvenement($evenement_id)
-{
-    $reservations = Reservation::where('evenement_id', $evenement_id)
-                                ->whereIn('statut', ['termine', 'en cours']) // Filtrer par statut
-                                ->with('user:id,name,email,telephone') // Inclure seulement l'id et le nom de l'utilisateur
-                                ->get();
-
-    return response()->json($reservations, 200);
-}
-
-public function confirmerReservation($reservation_id)
-{
-    // Find the reservation by its ID
-    $reservation = Reservation::findOrFail($reservation_id);
-
-    // Check if the reservation status is 'en_attente'
-    if ($reservation->statut !== 'en cours') {
-        return response()->json([
-            "status" => false,
-            "message" => "La réservation ne peut être confirmée car elle n'est pas en attente."
-        ], 400);
-    }
-
-    // Update the status to 'accepte'
-    $reservation->statut = 'termine';
-    $reservation->save();
-
-    // Notify the user
-    Mail::to($reservation->user->email)->send(new ReservationAccepted($reservation));
-
-    return response()->json([
-        "status" => true,
-        "message" => "Réservation confirmée avec succès.",
-        "data" => $reservation
-    ], 200);
-}
-
-public function refuserReservation($reservation_id)
+    public function refuserReservation($reservation_id)
     {
         // Find the reservation by its ID
         $reservation = Reservation::findOrFail($reservation_id);
@@ -224,4 +224,19 @@ public function refuserReservation($reservation_id)
         ], 200);
     }
 
+    // Nombre de reservations
+    public function count()
+    {
+        $count = Reservation::count();
+        return $this->customJsonResponse('Nombre de reservations', $count);
+    }
+
+    // Nombre de clients qui ont une reservation avec le statut termine
+    public function countTermine()
+    {
+        $count = Reservation::where('statut', 'termine')
+            ->distinct('user_id')  // Assure que chaque utilisateur est compté une seule fois
+            ->count('user_id');    // Compte les utilisateurs uniques
+        return $this->customJsonResponse('Nombre de clients qui ont une reservation avec le statut termine', $count);
+    }
 }

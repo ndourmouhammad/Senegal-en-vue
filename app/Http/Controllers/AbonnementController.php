@@ -73,4 +73,16 @@ public function getSentSubscriptions()
     return response()->json($subscriptions);
 }
 
+// Nombre d'abonnés par guide connecte (avec le statut 'termine')
+public function countSubscriptions()
+{
+    $guide = Auth::user();
+    $count = Abonnement::where('guide_id', $guide->id)
+                        ->where('status', 'accepte')
+                        ->count();
+    return response()->json(['count' => $count]);
+
+}
+
+
 }

@@ -115,4 +115,11 @@ class SiteTouristiqueController extends Controller
         $activities = $site->activities;
         return response()->json($activities);
     }
+
+    // Nombre de site touristiques
+    public function count()
+    {
+        $count = SiteTouristique::count();
+        return $this->customJsonResponse('Nombre de sites', $count);
+    }
 }

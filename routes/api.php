@@ -33,6 +33,9 @@ Route::delete('/user/{id}', [AuthController::class, 'destroy']);
 Route::post('/change-role/{id}', [AuthController::class, 'changeRole']);
 Route::post('/activate/{id}', [AuthController::class, 'activate']);
 Route::post('/deactivate/{id}', [AuthController::class, 'deactivate']);
+// Nombre de guide
+Route::get('/nombre-guide', [AuthController::class, 'countGuide']);
+Route::get('/nombre-touriste', [AuthController::class, 'countTouriste']);
 
 // Permission
 Route::post('/permission', [PermissionController::class, 'ajouterPermission']);
@@ -74,6 +77,7 @@ Route::prefix('articles/{id}')->group(function () {
 // Site Touristique
 Route::post('/sites/{id}', [SiteTouristiqueController::class, 'update']);
 Route::apiResource('/sites', SiteTouristiqueController::class)->only(['index', 'show', 'store', 'destroy']);
+Route::get('/nombre-sites', [SiteTouristiqueController::class, 'count']);
 
 // Liaison entre site et activite
 Route::post('/sites/{siteId}/activities/{activityId}', [SiteTouristiqueController::class, 'addActivityToSite']);
@@ -83,6 +87,7 @@ Route::get('/sites/{siteId}/activities', [SiteTouristiqueController::class, 'get
 // Evenement
 Route::post('/evenements/{id}', [EvenementController::class, 'update']);
 Route::apiResource('/evenements', EvenementController::class)->only(['index', 'show', 'store', 'destroy']);
+Route::get('/nombre-evenements', [EvenementController::class, 'count']);
 
 // Reservation
 Route::post('evenements/{id}/reservation', [ReservationController::class, 'reserver']);
@@ -90,6 +95,9 @@ Route::get('mes-reservations', [ReservationController::class, 'mesReservations']
 Route::get('evenements/{id}/reservations', [ReservationController::class, 'reservationsEvenement']);
 Route::post('reservations/{id}/confirmer', [ReservationController::class, 'confirmerReservation']);
 Route::post('reservations/{id}/refuser', [ReservationController::class, 'refuserReservation']);
+Route::get('nombre-reservations', [ReservationController::class, 'count']);
+// Nombre de clients qui ont une reservation avec le statut termine
+Route::get('nombre-termine', [ReservationController::class, 'countTermine']);
 
 // Commande
 Route::post('sites/{id}/commande', [CommandeController::class, 'commander']);
@@ -97,6 +105,7 @@ Route::get('mes-commandes', [CommandeController::class, 'mesCommandes']);
 Route::get('sites/{id}/commandes', [CommandeController::class, 'commandesSites']);
 Route::post('commandes/{id}/confirmer', [CommandeController::class, 'confirmerCommande']);
 Route::post('commandes/{id}/refuser', [CommandeController::class, 'refuserCommande']);
+
 
 // Abonnement
 Route::middleware('auth:api')->group(function () {
@@ -112,4 +121,8 @@ Route::middleware('auth:api')->group(function () {
 
     // Route pour afficher les demandes envoyées par le touriste
     Route::get('subscriptions/sent', [AbonnementController::class, 'getSentSubscriptions']);
+
+    // Nombre d'abonnés par guide connecte (avec le statut 'termine')
+    Route::get('subscriptions/count', [AbonnementController::class, 'countSubscriptions']);
 });
+

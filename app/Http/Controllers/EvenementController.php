@@ -92,4 +92,11 @@ class EvenementController extends Controller
        $evenement->delete();
        return $this->customJsonResponse("Evenement supprimé avec succès", $evenement, 200);
     }
+
+    // Nombre d'evenements
+    public function count()
+    {
+        $count = Evenement::count();
+        return $this->customJsonResponse("Nombre d'evenements", $count, 200);
+    }
 }
