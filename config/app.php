@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\ServiceProvider;
+
 return [
 
     /*
@@ -122,5 +124,10 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    'providers' => array_merge([
+        // Autres fournisseurs de services Laravel...
+        Spatie\Permission\PermissionServiceProvider::class,
+    ], ServiceProvider::defaultProviders()->toArray()),
 
 ];

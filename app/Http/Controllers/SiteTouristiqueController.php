@@ -95,21 +95,21 @@ class SiteTouristiqueController extends Controller
         return $this->customJsonResponse('Site supprime', $site);
     }
 
-    public function addActivityToSite(Request $request, $siteId, $activityId)
+    public function ajouterUneActiviteAUnSite(Request $request, $siteId, $activityId)
     {
         $site = SiteTouristique::findOrFail($siteId);
         $site->activities()->attach($activityId);
         return response()->json(['message' => 'Activité ajoutée au site touristique avec succès.']);
     }
 
-    public function removeActivityFromSite(Request $request, $siteId, $activityId)
+    public function supprimerUneActiviteDUnSite(Request $request, $siteId, $activityId)
     {
         $site = SiteTouristique::findOrFail($siteId);
         $site->activities()->detach($activityId);
         return response()->json(['message' => 'Activité retirée du site touristique avec succès.']);
     }
 
-    public function getActivitiesOfSite($siteId)
+    public function listerLesActivitesDunSite($siteId)
     {
         $site = SiteTouristique::findOrFail($siteId);
         $activities = $site->activities;
@@ -117,7 +117,7 @@ class SiteTouristiqueController extends Controller
     }
 
     // Nombre de site touristiques
-    public function count()
+    public function nombreDeSites()
     {
         $count = SiteTouristique::count();
         return $this->customJsonResponse('Nombre de sites', $count);

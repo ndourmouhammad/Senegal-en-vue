@@ -92,7 +92,7 @@ class ArticleController extends Controller
     return $this->customJsonResponse('Catégorie supprimée', $article);
     }
 
-    public function likeOrDislike(Request $request, $articleId)
+    public function approuverOuDesapprouver(Request $request, $articleId)
 {
     $user = Auth::user();
     $isLike = $request->input('is_like'); // true pour like, false pour dislike
@@ -116,7 +116,7 @@ class ArticleController extends Controller
     ]);
 }
 
-public function getArticleReactions($articleId)
+public function voirLesReactions($articleId)
 {
     $likesCount = DB::table('article_user_like') 
         ->where('article_id', $articleId)

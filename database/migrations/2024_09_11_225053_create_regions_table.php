@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('superficie');
             $table->integer('population');
             $table->string('image')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

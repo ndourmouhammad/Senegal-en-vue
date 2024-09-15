@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade')->onUpdate('cascade');
             // cle etrangere sites_touristiques
             $table->foreignId('site_touristique_id')->constrained('site_touristiques')->onDelete('cascade')->onUpdate('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

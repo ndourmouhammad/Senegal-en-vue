@@ -27,6 +27,7 @@ return new class extends Migration
             $table->integer('numero_carte_guide')->nullable();
             $table->string('carte_guide')->nullable();
             $table->boolean('statut');
+            $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
         });

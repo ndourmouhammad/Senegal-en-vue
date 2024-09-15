@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreignId('region_id')->constrained('regions')->onDelete('cascade')->onUpdate('cascade');
             // cle etrangere de user
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

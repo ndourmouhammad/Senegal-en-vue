@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('site_touristique_id')->constrained('site_touristiques')->onDelete('cascade')->onUpdate('cascade');
             $table->enum('statut', ['en cours', 'termine', 'refuse'])->default('en cours');
             $table->date('date_commande');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

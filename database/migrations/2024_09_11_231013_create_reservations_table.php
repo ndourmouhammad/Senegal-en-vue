@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('date_reservation');
             $table->time('heure_reservation');
             $table->enum('statut', ['en cours', 'termine', 'refuse'])->default('en cours');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

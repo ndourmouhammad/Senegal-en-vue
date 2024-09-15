@@ -12,7 +12,7 @@ use App\Notifications\SubscriptionRequested;
 class AbonnementController extends Controller
 {
     // Méthode pour qu'un touriste demande un abonnement à un guide
-    public function subscribeToGuide(Request $request, $guideId)
+    public function abonnerAUnGuide(Request $request, $guideId)
 {
     $touriste = Auth::user(); // Récupère l'utilisateur connecté (touriste)
     $guide = User::findOrFail($guideId); // Trouve le guide
@@ -39,7 +39,7 @@ class AbonnementController extends Controller
 }
 
 
-public function respondToSubscription($subscriptionId, $status)
+public function accepterOuRefuserUnAbonnement($subscriptionId, $status)
 {
     $guide = Auth::user(); // Récupère l'utilisateur connecté (guide)
     $subscription = Abonnement::findOrFail($subscriptionId);
@@ -67,25 +67,25 @@ public function respondToSubscription($subscriptionId, $status)
 
 
 // Méthode pour afficher toutes les demandes reçues par un guide
-public function getReceivedSubscriptions()
+public function abonnementsRecus()
 {
     $guide = Auth::user(); // Guide connecté
-    $subscriptions = $guide->subscriptionsAsGuide()->where('status', 'en cours')->get();
+    $subscriptions = $guide->abonnementsGuide()->where('status', 'en cours')->get();
 
     return response()->json($subscriptions);
 }
 
 // Méthode pour afficher toutes les demandes faites par un touriste
-public function getSentSubscriptions()
+public function abonnementsEnvoyes()
 {
     $tourist = Auth::user(); // Touriste connecté
-    $subscriptions = $tourist->subscriptionsAsTourist()->get();
+    $subscriptions = $tourist->abonnementsTouriste()->get();
 
     return response()->json($subscriptions);
 }
 
 // Nombre d'abonnés par guide connecte (avec le statut 'termine')
-public function countSubscriptions()
+public function nombreAbonnes()
 {
     $guide = Auth::user();
     $count = Abonnement::where('guide_id', $guide->id)
@@ -95,13 +95,13 @@ public function countSubscriptions()
 
 }
 
-public function getNotifications()
+public function voirNotifications()
 {
     $user = Auth::user();
     return response()->json($user->unreadNotifications);
 }
 
-public function markAsRead($notificationId)
+public function marquerNotificationCommeLue($notificationId)
 {
     // Récupérer l'utilisateur connecté
     $user = Auth::user();

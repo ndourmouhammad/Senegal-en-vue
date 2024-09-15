@@ -47,9 +47,10 @@ class RegionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Region $region)
+    public function show($id)
     {
-        //
+        $region = Region::findOrfail($id);
+        return $this->customJsonResponse('Region', $region);
     }
 
     /**

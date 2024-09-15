@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('contenu');
             $table->string('image');
             $table->date('date_publication');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

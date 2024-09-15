@@ -9,11 +9,12 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable, HasRoles, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -75,7 +76,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->getKey();
     }
- 
+
     /**
      * Return a key value array, containing any custom claims to be added to the JWT.
      *
@@ -87,28 +88,28 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function getPhotoUrlAttribute()
-{
-    return $this->photo_profil ? asset('storage/photos/' . str_replace('public/', '', $this->photo_profil)) : null;
-}
+    {
+        return $this->photo_profil ? asset('storage/photos/' . str_replace('public/', '', $this->photo_profil)) : null;
+    }
 
-public function getCarteUrlAttribute()
-{
-    return $this->carte_guide ? asset('storage/cartes/' . str_replace('public/', '', $this->carte_guide)) : null;
-}
+    public function getCarteUrlAttribute()
+    {
+        return $this->carte_guide ? asset('storage/cartes/' . str_replace('public/', '', $this->carte_guide)) : null;
+    }
 
-// Les abonnements en tant que touriste (abonnements créés par ce user)
-public function subscriptionsAsTourist()
-{
-    return $this->hasMany(Abonnement::class, 'touriste_id');
-}
+    // Les abonnements en tant que touriste (abonnements créés par ce user)
+    public function abonnementsTouriste()
+    {
+        return $this->hasMany(Abonnement::class, 'touriste_id');
+    }
 
-// Les abonnements en tant que guide (abonnements reçus par ce user)
-public function subscriptionsAsGuide()
-{
-    return $this->hasMany(Abonnement::class, 'guide_id');
-}
+    // Les abonnements en tant que guide (abonnements reçus par ce user)
+    public function abonnementsGuide()
+    {
+        return $this->hasMany(Abonnement::class, 'guide_id');
+    }
 
-public function likedArticles()
+    public function likedArticles()
     {
         return $this->belongsToMany(Article::class, 'article_user_like')->withPivot('is_like')->withTimestamps();
     }
@@ -120,27 +121,24 @@ public function likedArticles()
         if (!$this->exists) {
             throw new \Exception('L\'utilisateur n\'existe pas dans la base.');
         }
-    
+
         // On récupère le nombre total de notes actuelles
         $totalRatings = $this->ratings_count ?? 0;
-    
+
         // Calculer la somme des anciennes notes
         $oldTotalRating = $this->note * $totalRatings;
-    
+
         // Incrémenter le nombre de notes
         $newTotalRatings = $totalRatings + 1;
-    
+
         // Calculer la nouvelle moyenne
         $newAverageRating = ($oldTotalRating + $newRating) / $newTotalRatings;
-    
+
         // Mettre à jour la note moyenne et le nombre total de notes
         $this->note = $newAverageRating;
         $this->ratings_count = $newTotalRatings;
-    
+
         // Sauvegarder les modifications
         $this->save();
     }
-    
-
-
 }

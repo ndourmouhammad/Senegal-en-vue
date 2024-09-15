@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('article_id')->constrained('articles')->onDelete('cascade')->onUpdate('cascade');
             $table->date('date_publication');
             $table->time('heure_publication');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -47,7 +47,7 @@ class RoleController extends Controller
         return $this->customJsonResponse('Le role a bien été modifié', $role);
     }
 
-    public function givePermissions(Request $request, $roleId)
+    public function donnerPermission(Request $request, $roleId)
 {
     
 

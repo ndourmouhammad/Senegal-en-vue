@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('touriste_id')->constrained('users')->onDelete('cascade'); // Référence à l'utilisateur touriste
             $table->foreignId('guide_id')->constrained('users')->onDelete('cascade');   // Référence à l'utilisateur guide
             $table->enum('status', ['en cours', 'accepte', 'rejete'])->default('en cours');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

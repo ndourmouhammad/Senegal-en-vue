@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('libelle');
             $table->string('description');
             $table->string('contenu');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
