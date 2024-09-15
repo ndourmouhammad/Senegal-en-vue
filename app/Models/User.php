@@ -112,5 +112,35 @@ public function likedArticles()
     {
         return $this->belongsToMany(Article::class, 'article_user_like')->withPivot('is_like')->withTimestamps();
     }
+
+
+    public function updateAverageRating($newRating)
+    {
+        // On s'assure que cet utilisateur existe bien dans la base
+        if (!$this->exists) {
+            throw new \Exception('L\'utilisateur n\'existe pas dans la base.');
+        }
     
+        // On récupère le nombre total de notes actuelles
+        $totalRatings = $this->ratings_count ?? 0;
+    
+        // Calculer la somme des anciennes notes
+        $oldTotalRating = $this->note * $totalRatings;
+    
+        // Incrémenter le nombre de notes
+        $newTotalRatings = $totalRatings + 1;
+    
+        // Calculer la nouvelle moyenne
+        $newAverageRating = ($oldTotalRating + $newRating) / $newTotalRatings;
+    
+        // Mettre à jour la note moyenne et le nombre total de notes
+        $this->note = $newAverageRating;
+        $this->ratings_count = $newTotalRatings;
+    
+        // Sauvegarder les modifications
+        $this->save();
+    }
+    
+
+
 }

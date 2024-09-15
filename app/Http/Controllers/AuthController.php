@@ -232,5 +232,35 @@ public function user($id)
     })->count();
     return $this->customJsonResponse('Nombre de touristes', $touristes);
   }
+
+  // Noter un guide
+  public function storeRating(Request $request, User $guide)
+{
+    // Validation de la note
+    $request->validate([
+        'note' => 'required|integer|min:1|max:10',
+    ]);
+
+    // Vérifier que l'utilisateur est un touriste
+    if (!auth()->user()->hasRole('touriste')) {
+        return response()->json(['error' => 'Seuls les touristes peuvent noter les guides.'], 403);
+    }
+
+    // S'assurer que le guide est bien trouvé
+    if (!$guide || !$guide->exists) {
+        return response()->json(['error' => 'Guide non trouvé.'], 404);
+    }
+
+    // Mise à jour de la moyenne des notes du guide
+    $guide->updateAverageRating($request->note);
+
+    return response()->json([
+        'success' => 'Note ajoutée avec succès et moyenne mise à jour.',
+        'average_rating' => $guide->note,
+    ], 200);
+}
+
+
+
 }
  

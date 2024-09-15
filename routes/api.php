@@ -36,6 +36,9 @@ Route::post('/deactivate/{id}', [AuthController::class, 'deactivate']);
 // Nombre de guide
 Route::get('/nombre-guide', [AuthController::class, 'countGuide']);
 Route::get('/nombre-touriste', [AuthController::class, 'countTouriste']);
+// Noter un guide
+Route::post('/guides/{guide}/rate', [AuthController::class, 'storeRating']);
+
 
 // Permission
 Route::post('/permission', [PermissionController::class, 'ajouterPermission']);
