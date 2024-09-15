@@ -6,34 +6,40 @@ use App\Models\User;
 use App\Models\Abonnement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\SubscriptionResponse;
+use App\Notifications\SubscriptionRequested;
 
 class AbonnementController extends Controller
 {
     // Méthode pour qu'un touriste demande un abonnement à un guide
     public function subscribeToGuide(Request $request, $guideId)
-    {
-        $touriste = Auth::user(); // Récupère l'utilisateur connecté (touriste)
-        $guide = User::findOrFail($guideId); // Trouve le guide
-        
-        // Vérifie si une demande existe déjà
-        $existingSubscription = Abonnement::where('touriste_id', $touriste->id)
-                                            ->where('guide_id', $guideId)
-                                            ->first();
-        if ($existingSubscription) {
-            return response()->json(['message' => 'Vous avez déjà une demande en attente ou approuvée.'], 400);
-        }
-
-        // Crée la demande d'abonnement
-        $subscription = Abonnement::create([
-            'touriste_id' => $touriste->id,
-            'guide_id' => $guideId,
-            'status' => 'en cours',
-        ]);
-
-        return response()->json(['message' => 'Demande d\'abonnement envoyée.', 'subscription' => $subscription], 201);
+{
+    $touriste = Auth::user(); // Récupère l'utilisateur connecté (touriste)
+    $guide = User::findOrFail($guideId); // Trouve le guide
+    
+    // Vérifie si une demande existe déjà
+    $existingSubscription = Abonnement::where('touriste_id', $touriste->id)
+                                        ->where('guide_id', $guideId)
+                                        ->first();
+    if ($existingSubscription) {
+        return response()->json(['message' => 'Vous avez déjà une demande en attente ou approuvée.'], 400);
     }
 
-    public function respondToSubscription($subscriptionId, $status)
+    // Crée la demande d'abonnement
+    $subscription = Abonnement::create([
+        'touriste_id' => $touriste->id,
+        'guide_id' => $guideId,
+        'status' => 'en cours',
+    ]);
+
+    // Envoyer une notification interne au guide
+    $guide->notify(new SubscriptionRequested($touriste, $guide));
+
+    return response()->json(['message' => 'Demande d\'abonnement envoyée.', 'subscription' => $subscription], 201);
+}
+
+
+public function respondToSubscription($subscriptionId, $status)
 {
     $guide = Auth::user(); // Récupère l'utilisateur connecté (guide)
     $subscription = Abonnement::findOrFail($subscriptionId);
@@ -52,8 +58,13 @@ class AbonnementController extends Controller
     $subscription->status = $status;
     $subscription->save();
 
+    // Envoyer une notification interne au touriste
+    $touriste = User::findOrFail($subscription->touriste_id);
+    $touriste->notify(new SubscriptionResponse($subscription, $status));
+
     return response()->json(['message' => 'Demande mise à jour.', 'subscription' => $subscription], 200);
 }
+
 
 // Méthode pour afficher toutes les demandes reçues par un guide
 public function getReceivedSubscriptions()
@@ -83,6 +94,38 @@ public function countSubscriptions()
     return response()->json(['count' => $count]);
 
 }
+
+public function getNotifications()
+{
+    $user = Auth::user();
+    return response()->json($user->unreadNotifications);
+}
+
+public function markAsRead($notificationId)
+{
+    // Récupérer l'utilisateur connecté
+    $user = Auth::user();
+    
+    // Récupérer la notification avec l'ID spécifié pour cet utilisateur
+    $notification = $user->notifications()->find($notificationId);
+
+    // Si la notification existe
+    if ($notification) {
+        // Marquer la notification comme lue (ceci met à jour automatiquement le champ read_at)
+        $notification->markAsRead();
+        
+        // Retourner un message avec la date et l'heure de lecture (read_at)
+        return response()->json([
+            'message' => 'Notification marquée comme lue',
+            'read_at' => $notification->read_at
+        ]);
+    }
+
+    // Si la notification n'existe pas
+    return response()->json(['message' => 'Notification non trouvée'], 404);
+}
+
+
 
 
 }

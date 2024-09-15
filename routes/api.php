@@ -126,3 +126,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('subscriptions/count', [AbonnementController::class, 'countSubscriptions']);
 });
 
+Route::middleware('auth:api')->group(function () {
+    Route::get('/notifications', [AbonnementController::class, 'getNotifications']);
+    Route::post('/notifications/{id}/read', [AbonnementController::class, 'markAsRead']);
+});
