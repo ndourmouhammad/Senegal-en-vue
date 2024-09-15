@@ -65,6 +65,8 @@ Route::apiResource('/categories', CategorieController::class)->only(['index', 's
 // Article
 Route::post('/articles/{id}', [ArticleController::class, 'update']);
 Route::apiResource('/articles', ArticleController::class)->only(['index', 'store', 'destroy']);
+Route::post('/articles/{articleId}/react', [ArticleController::class, 'likeOrDislike'])->middleware('auth');
+Route::get('/articles/{articleId}/reactions', [ArticleController::class, 'getArticleReactions']);
 
 // Commentaire
 Route::prefix('articles/{id}')->group(function () {

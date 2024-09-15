@@ -107,5 +107,10 @@ public function subscriptionsAsGuide()
 {
     return $this->hasMany(Abonnement::class, 'guide_id');
 }
+
+public function likedArticles()
+    {
+        return $this->belongsToMany(Article::class, 'article_user_like')->withPivot('is_like')->withTimestamps();
+    }
     
 }

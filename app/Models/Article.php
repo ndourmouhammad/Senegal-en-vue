@@ -16,4 +16,12 @@ class Article extends Model
     {
         return $this->hasMany(Commentaire::class);
     }
+
+
+    public function likedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'article_user_like')->withPivot('is_like')->withTimestamps();
+    }
+
+
 }
