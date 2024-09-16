@@ -96,7 +96,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('commentaires')->group(function () {
         Route::post('/{commentaire}', [CommentaireController::class, 'update']);
         Route::post('/', [CommentaireController::class, 'store']);
-        Route::delete('/{id}', [CommentaireController::class, 'destroy']);
+        Route::delete('/{commentaire}', [CommentaireController::class, 'destroy']);
     });
     });
 
@@ -147,8 +147,10 @@ Route::middleware('auth')->group(function () {
     
 });
 
-Route::get('/guides', [AuthController::class, 'listerGuides']);
-Route::get('/guides/{id}', [AuthController::class, 'afficherDetailsGuide']);
+Route::prefix('guides')->group(function () {
+    Route::get('/', [AuthController::class, 'listerGuides']);
+    Route::get('/{id}', [AuthController::class, 'afficherDetailsGuide']);
+});
 
 Route::apiResource('/regions', RegionController::class)->only(['index','show']);
 
