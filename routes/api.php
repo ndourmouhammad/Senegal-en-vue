@@ -35,7 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/deconnecter', [AuthController::class, 'deconnecter']);
 
     Route::prefix('users')->group(function () {
-        Route::get('/', [AuthController::class, 'listerUtilisateurs'])->middleware('permission:lister les utilisateurs');
+        Route::get('/', [AuthController::class, 'listerUtilisateurs']);
         Route::get('/{id}', [AuthController::class, 'afficherDetailsUtilisateur']);
         Route::delete('/{id}', [AuthController::class, 'supprimerUtilisateur'])->middleware('permission:bannir un utilisateur');
         Route::post('/change-role/{id}', [AuthController::class, 'changerRole'])->middleware('permission:modifier un role');
@@ -87,7 +87,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/{id}', [ArticleController::class, 'update'])->middleware('permission:modifier un article');
         Route::post('/', [ArticleController::class, 'store'])->middleware('permission:ajouter un article');
         Route::delete('/{id}', [ArticleController::class, 'destroy'])->middleware('permission:supprimer un article');
-        Route::get('/{id}/reactions', [ArticleController::class, 'voirLesReactions']);
+        
         Route::post('/{id}/react', [ArticleController::class, 'approuverOuDesapprouver']);
     });
 
@@ -158,13 +158,16 @@ Route::apiResource('/activites', ActiviteController::class)->only(['index']);
 
 Route::apiResource('/categories', CategorieController::class)->only(['index']);
 
-Route::apiResource('/articles', ArticleController::class)->only(['index']);
+Route::apiResource('/articles', ArticleController::class)->only(['index', 'show']);
 
 Route::get('/articles/{id}/commentaires', [CommentaireController::class, 'index']);
+Route::get('articles/{id}/reactions', [ArticleController::class, 'voirLesReactions']);
+
 
 Route::apiResource('/sites', SiteTouristiqueController::class)->only(['index', 'show']);
 Route::get('/nombre-sites', [SiteTouristiqueController::class, 'nombreDeSites']);
 Route::get('sites/{siteId}/activities', [SiteTouristiqueController::class, 'listerLesActivitesDunSite']);
+Route::get('/guides/{guideId}/sites', [SiteTouristiqueController::class, 'listerLesSitesDuGuide']);
 
 Route::apiResource('/evenements', EvenementController::class)->only(['index', 'show']);
 

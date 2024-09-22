@@ -16,14 +16,17 @@ class CommentaireController extends Controller
      */
     public function index($articleId)
     {
-        //
-        $commentaires=Commentaire::where("article_id", $articleId)->get();
+        $commentaires = Commentaire::with('user') // Assurez-vous que la relation est définie dans le modèle Commentaire
+            ->where('article_id', $articleId)
+            ->get();
+    
         return response()->json([
             'status' => true,
             'message' => 'Commentaires récupérés avec succès',
             'data' => $commentaires
         ], 200);
     }
+    
 
     /**
      * Show the form for creating a new resource.

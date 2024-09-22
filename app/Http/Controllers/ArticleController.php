@@ -49,9 +49,13 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Article $article)
+    public function show($id)
     {
-        //
+        $article = Article::findOrfail($id);
+        if (!$article) {
+            return response()->json(['message' => 'Article non trouvé'], 404);
+        }   
+        return $this->customJsonResponse('Article', $article);
     }
 
     /**

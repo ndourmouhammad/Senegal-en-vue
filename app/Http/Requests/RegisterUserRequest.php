@@ -35,7 +35,7 @@ class RegisterUserRequest extends FormRequest
             'date_naissance' => 'required|date|date_format:Y-m-d',
             'langues' => 'nullable|string',
             'numero_carte_guide' => 'nullable',
-            'carte_guide' => 'nullable|mimes:jpeg,jpg,png,gif|max:4048',
+            'carte_guide' => 'nullable',
             'note' => 'nullable|integer|min:0|max:10',
         ];
     }
