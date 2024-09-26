@@ -25,11 +25,12 @@ class UpdateSiteTouristiqueRequest extends FormRequest
         return [
             'libelle' => 'sometimes|string|max:255',
             'description' => 'sometimes|string',
-            'contenu' => 'required|file|mimetypes:image/jpeg,image/png,video/mp4,video/quicktime|max:50480', // Permet des images ou vidéos
-            'heure_ouverture' => 'sometimes|date_format:H:i',
-            'heure_fermeture' => 'sometimes|date_format:H:i',
+            'contenu' => 'sometimes|file|mimetypes:image/jpeg,image/png,video/mp4,video/quicktime|max:50480', // Permet des images ou vidéos
+            'heure_ouverture' => 'sometimes|date_format:H:i:s',
+            'heure_fermeture' => 'sometimes|date_format:H:i:s',
             'tarif_entree' => 'sometimes|integer|min:0',
             'region_id' => 'sometimes|exists:regions,id',
+            'places_disponible' => 'sometimes|integer|min:0',
             'user_id' => 'sometimes|exists:users,id',
         ];
     }

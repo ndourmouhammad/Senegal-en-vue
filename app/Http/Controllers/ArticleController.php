@@ -74,12 +74,12 @@ class ArticleController extends Controller
         $article = Article::findOrfail($id);
         $article->fill($request->validated());
 
-        if ($request->hasFile('contenu')) {
-            if ($article->contenu) {
-                Storage::delete($article->contenu);
+        if ($request->hasFile('image')) {
+            if ($article->image) {
+                Storage::delete($article->image);
             }
-            $contenuPath = $request->file('contenu')->store('public/articles');
-            $article->contenu = str_replace('public/', '', $contenuPath);
+            $contenuPath = $request->file('image')->store('public/articles');
+            $article->image = str_replace('public/', '', $contenuPath);
         }
 
         $article->update();

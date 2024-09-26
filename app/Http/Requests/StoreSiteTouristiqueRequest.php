@@ -29,6 +29,7 @@ class StoreSiteTouristiqueRequest extends FormRequest
             'heure_ouverture' => 'required|date_format:H:i',
             'heure_fermeture' => 'required|date_format:H:i',
             'tarif_entree' => 'required|integer|min:0',
+            'places_disponible' => 'required|integer|min:0',
             'region_id' => 'required|exists:regions,id',            
         ];
     }

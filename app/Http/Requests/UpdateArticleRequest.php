@@ -25,7 +25,7 @@ class UpdateArticleRequest extends FormRequest
         return [
             'titre' => 'sometimes|string|max:255',
             'contenu' => 'sometimes|string',
-            'image' => 'sometimes|mimes:jpg,jpeg,png|max:5048',
+            'image' => 'sometimes|mimes:jpg,jpeg,png,svg,webp|max:5048',
             'date_publication' => 'sometimes|date',
         ];
     }

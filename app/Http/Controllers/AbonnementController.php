@@ -70,10 +70,17 @@ public function accepterOuRefuserUnAbonnement($subscriptionId, $status)
 public function abonnementsRecus()
 {
     $guide = Auth::user(); // Guide connecté
-    $subscriptions = $guide->abonnementsGuide()->where('status', 'en cours')->get();
+
+    // Charger les abonnements avec les informations des utilisateurs abonnés
+    $subscriptions = $guide->abonnementsGuide()
+                           ->whereIn('status', ['accepte', 'en cours']) // Utiliser whereIn pour plusieurs statuts
+                           ->with('touriste') // Charger les informations des touristes
+                           ->get();
 
     return response()->json($subscriptions);
 }
+
+
 
 // Méthode pour afficher toutes les demandes faites par un touriste
 public function abonnementsEnvoyes()

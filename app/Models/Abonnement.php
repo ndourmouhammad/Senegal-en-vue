@@ -23,4 +23,5 @@ class Abonnement extends Model
      {
          return $this->belongsTo(User::class, 'guide_id');
      }
+     
 }

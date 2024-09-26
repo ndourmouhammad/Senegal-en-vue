@@ -46,9 +46,13 @@ class ActiviteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Activite $activite)
+    public function show($id)
     {
-        //
+        $activite = Activite::findOrfail($id);
+        if (!$activite) {
+            return response()->json(['message' => 'activite non trouvé'], 404);
+        }   
+        return $this->customJsonResponse('activite', $activite);
     }
 
     /**
@@ -82,9 +86,9 @@ class ActiviteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Activite $activite)
+    public function destroy($id)
     {
-        $activite = Activite::findOrfail($activite->id);
+        $activite = Activite::findOrfail($id);
         $activite->delete();
         return $this->customJsonResponse('Activite supprimé', $activite);
     }

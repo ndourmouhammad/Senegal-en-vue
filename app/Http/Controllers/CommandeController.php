@@ -222,4 +222,20 @@ public function refuserCommande($commande_id)
             "data" => $commande
         ], 200);
     }
+
+     // Nombre de reservations
+     public function count()
+     {
+         $count = Commande::count();
+         return $this->customJsonResponse('Nombre de reservations', $count);
+     }
+
+     // Nombre de clients qui ont une reservation avec le statut termine
+    public function countTermine()
+    {
+        $count = Commande::where('statut', 'termine')
+            ->distinct('user_id')  // Assure que chaque utilisateur est compté une seule fois
+            ->count('user_id');    // Compte les utilisateurs uniques
+        return $this->customJsonResponse('Nombre de clients qui ont une reservation avec le statut termine', $count);
+    }
 }

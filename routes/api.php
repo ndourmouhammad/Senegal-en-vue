@@ -15,8 +15,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\CommentaireController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SiteTouristiqueController;
-
-
+use App\Models\Commande;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -43,8 +42,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/desactiver/{id}', [AuthController::class, 'desactiver']);
     });
 
-    Route::get('/nombre-guide', [AuthController::class, 'nombreGuide']);
-    Route::get('/nombre-touriste', [AuthController::class, 'nombreTouriste']);
+    
     Route::post('/guides/{guide}/noter', [AuthController::class, 'noterGuide'])->middleware('permission:noter un guide');
 
     // permissions
@@ -73,7 +71,9 @@ Route::middleware('auth')->group(function () {
     // Activite
     Route::prefix('activites')->group(function () {
         Route::post('/{id}', [ActiviteController::class, 'update']);
-        Route::apiResource('/', ActiviteController::class)->only(['store', 'destroy']);
+        Route::delete('/{id}', [ActiviteController::class, 'destroy']);
+        Route::get('/{id}', [ActiviteController::class, 'show']);
+        Route::apiResource('/', ActiviteController::class)->only('store');
     });
 
     // Categorie
@@ -107,6 +107,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [SiteTouristiqueController::class, 'destroy'])->middleware('permission:supprimer un site touristique');
         Route::post('/{siteId}/activities/{activityId}', [SiteTouristiqueController::class, 'ajouterUneActiviteAUnSite']);
         Route::delete('/{siteId}/activities/{activityId}', [SiteTouristiqueController::class, ' supprimerUneActiviteDUnSite']);
+        Route::get('/nombre-sites', [SiteTouristiqueController::class, 'nombreDeSites']);
 
         // Commande
         Route::post('/{id}/commande', [CommandeController::class, 'commander'])->middleware('permission:faire une commande');
@@ -114,6 +115,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}/commandes', [CommandeController::class, 'commandesSites']);
         Route::post('commandes/{id}/confirmer', [CommandeController::class, 'confirmerCommande'])->middleware('permission:accepter une commande');
         Route::post('commandes/{id}/refuser', [CommandeController::class, 'refuserCommande'])->middleware('permission:refuser une commande');
+        Route::get('nombre-termine', [CommandeController::class, 'countTermine']); 
     });
 
     // evenement
@@ -165,9 +167,14 @@ Route::get('articles/{id}/reactions', [ArticleController::class, 'voirLesReactio
 
 
 Route::apiResource('/sites', SiteTouristiqueController::class)->only(['index', 'show']);
-Route::get('/nombre-sites', [SiteTouristiqueController::class, 'nombreDeSites']);
+
 Route::get('sites/{siteId}/activities', [SiteTouristiqueController::class, 'listerLesActivitesDunSite']);
 Route::get('/guides/{guideId}/sites', [SiteTouristiqueController::class, 'listerLesSitesDuGuide']);
 
 Route::apiResource('/evenements', EvenementController::class)->only(['index', 'show']);
 
+Route::get('nombre-commandes', [CommandeController::class, 'count']);
+Route::get('nombre-evenements', [EvenementController::class, 'count']);
+Route::get('nbre-sites', [SiteTouristiqueController::class, 'nombreDeSite']);
+Route::get('/nombre-guide', [AuthController::class, 'nombreGuide']);
+Route::get('/nombre-touriste', [AuthController::class, 'nombreTouriste']);

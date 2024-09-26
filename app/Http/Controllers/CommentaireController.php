@@ -116,16 +116,23 @@ class CommentaireController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($articleId,$id)
+    public function destroy($articleId, $id)
     {
+        // Récupérer l'article
         $article = Article::findOrFail($articleId);
-        $commentaires=Commentaire::findOrFail($id);
+        
+        // Récupérer le commentaire lié à l'article
         $commentaires = $article->commentaires()->findOrFail($id);
-        if($commentaires->user_id != Auth::id()){
-            return response()->json(["error"=> "Unauthorized"],403);
+        
+        // Vérification si l'utilisateur est l'auteur du commentaire ou s'il a le rôle 'admin'
+        if ($commentaires->user_id != Auth::id() && !Auth::user()->hasRole('admin')) {
+            return response()->json(["error" => "Unauthorized"], 403);
         }
-       
+        
+        // Suppression du commentaire
         $commentaires->delete();
-        return response()->json(['message'=>'commentaire supprimer avec succé'],200);
+        
+        return response()->json(['message' => 'Commentaire supprimé avec succès'], 200);
     }
+    
 }

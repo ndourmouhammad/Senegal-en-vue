@@ -129,11 +129,19 @@ class SiteTouristiqueController extends Controller
     }
 
     // Nombre de site touristiques
-    public function nombreDeSites()
-    {
-        $count = SiteTouristique::count();
-        return $this->customJsonResponse('Nombre de sites', $count);
-    }
+    // Nombre de sites touristiques ajoutés par le guide connecté
+public function nombreDeSites()
+{
+    // Obtenir l'ID de l'utilisateur connecté (guide)
+    $userId = auth()->id();
+
+    // Compter les sites touristiques ajoutés par le guide connecté
+    $count = SiteTouristique::where('user_id', $userId)->count();
+
+    // Retourner la réponse JSON personnalisée
+    return $this->customJsonResponse('Nombre de sites ajoutés par le guide connecté', $count);
+}
+
 
     // Lister les sites liees a un guide (User avec le role guide)
     public function listerLesSitesDuGuide($guideId)
@@ -149,6 +157,13 @@ class SiteTouristiqueController extends Controller
     // Récupérer les sites associés à ce guide
     $sites = $guide->sites;
         return response()->json($sites);
+    }
+
+    // Nombre de site 
+    public function nombreDeSite()
+    {
+        $count = SiteTouristique::count();
+        return $this->customJsonResponse('Nombre de site', $count);
     }
    
 }
