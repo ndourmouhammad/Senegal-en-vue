@@ -132,7 +132,22 @@ public function marquerNotificationCommeLue($notificationId)
     return response()->json(['message' => 'Notification non trouvée'], 404);
 }
 
+public function getStatus($guideId)
+{
+    $user = auth()->user();
+    $abonnement = Abonnement::where('touriste_id', $user->id)
+                            ->where('guide_id', $guideId)
+                            ->first();
 
+    if ($abonnement) {
+        return response()->json([
+            'status' => $abonnement->status, // 'en cours', 'accepte', etc.
+        ]);
+    }
 
+    return response()->json([
+        'status' => 'non abonné',
+    ]);
+}
 
 }

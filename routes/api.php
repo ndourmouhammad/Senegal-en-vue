@@ -145,6 +145,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/abonnes', [AbonnementController::class, 'nombreAbonnes']);
         Route::get('/notifications', [AbonnementController::class, 'voirNotifications']);
         Route::post('/notifications/{id}/read', [AbonnementController::class, 'marquerNotificationCommeLue']);
+        Route::get('/{guideId}/status', [AbonnementController::class, 'getStatus']);
+
     });
     
 });
