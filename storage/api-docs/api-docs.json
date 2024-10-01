@@ -2957,18 +2957,7 @@
                         "name": "User-Agent",
                         "type": "string"
                     }
-                ],
-                "requestBody": {
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {}
-                            },
-                            "example": {}
-                        }
-                    }
-                }
+                ]
             },
             "post": {
                 "summary": "Ajouter un site",
