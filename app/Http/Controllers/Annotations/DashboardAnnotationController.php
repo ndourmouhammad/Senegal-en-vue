@@ -26,8 +26,24 @@ namespace App\Http\Controllers\Annotations ;
  *
 
  * @OA\GET(
- *     path="/api/nombre-sites",
+ *     path="/api/sites/nombre-sites",
  *     summary="Nombre de sites touristiques",
+ *     description="",
+ *         security={
+ *    {       "BearerAuth": {}}
+ *         },
+ * @OA\Response(response="200", description="OK"),
+ * @OA\Response(response="404", description="Not Found"),
+ * @OA\Response(response="500", description="Internal Server Error"),
+ *     @OA\Parameter(in="header", name="User-Agent", required=false, @OA\Schema(type="string")
+ * ),
+ *     tags={"Dashboard"},
+*),
+
+
+ * @OA\GET(
+ *     path="/api/nbre-sites",
+ *     summary="Nombre de sites touristiques du plateforme",
  *     description="",
  *         security={
  *    {       "BearerAuth": {}}
@@ -58,7 +74,23 @@ namespace App\Http\Controllers\Annotations ;
 
 
  * @OA\GET(
- *     path="/api/evenements/nombre-termine",
+ *     path="/api/nombre-commandes",
+ *     summary="Nombre de  commande",
+ *     description="",
+ *         security={
+ *    {       "BearerAuth": {}}
+ *         },
+ * @OA\Response(response="200", description="OK"),
+ * @OA\Response(response="404", description="Not Found"),
+ * @OA\Response(response="500", description="Internal Server Error"),
+ *     @OA\Parameter(in="header", name="User-Agent", required=false, @OA\Schema(type="string")
+ * ),
+ *     tags={"Dashboard"},
+*),
+
+
+ * @OA\GET(
+ *     path="/api/sites/nombre-termine",
  *     summary="Nombre de clients",
  *     description="",
  *         security={
@@ -90,7 +122,7 @@ namespace App\Http\Controllers\Annotations ;
 
 
  * @OA\GET(
- *     path="/api/evenements/nombre-evenements",
+ *     path="/api/nombre-evenements",
  *     summary="Nombre d'evenement",
  *     description="",
  *         security={

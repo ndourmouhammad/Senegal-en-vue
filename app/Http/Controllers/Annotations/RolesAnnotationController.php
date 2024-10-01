@@ -112,6 +112,36 @@ namespace App\Http\Controllers\Annotations ;
 *),
 
 
+ * @OA\DELETE(
+ *     path="/api/roles/{id}",
+ *     summary="Supprimer un role",
+ *     description="",
+ *         security={
+ *    {       "BearerAuth": {}}
+ *         },
+ * @OA\Response(response="204", description="Deleted successfully"),
+ * @OA\Response(response="401", description="Unauthorized"),
+ * @OA\Response(response="403", description="Forbidden"),
+ * @OA\Response(response="404", description="Not Found"),
+ *     @OA\Parameter(in="path", name="id", required=false, @OA\Schema(type="string")
+ * ),
+ *     @OA\Parameter(in="header", name="User-Agent", required=false, @OA\Schema(type="string")
+ * ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\MediaType(
+ *             mediaType="multipart/form-data",
+ *             @OA\Schema(
+ *                 type="object",
+ *                 properties={
+ *                 },
+ *             ),
+ *         ),
+ *     ),
+ *     tags={"Roles"},
+*),
+
+
  * @OA\POST(
  *     path="/api/roles/{id}/permission",
  *     summary="Donner une permission",
@@ -135,36 +165,6 @@ namespace App\Http\Controllers\Annotations ;
  *                 type="object",
  *                 properties={
  *                     @OA\Property(property="permissionId", type="string"),
- *                 },
- *             ),
- *         ),
- *     ),
- *     tags={"Roles"},
-*),
-
-
- * @OA\DELETE(
- *     path="/api/roles/{id}/permission",
- *     summary="Supprimer un role",
- *     description="",
- *         security={
- *    {       "BearerAuth": {}}
- *         },
- * @OA\Response(response="204", description="Deleted successfully"),
- * @OA\Response(response="401", description="Unauthorized"),
- * @OA\Response(response="403", description="Forbidden"),
- * @OA\Response(response="404", description="Not Found"),
- *     @OA\Parameter(in="path", name="id", required=false, @OA\Schema(type="string")
- * ),
- *     @OA\Parameter(in="header", name="User-Agent", required=false, @OA\Schema(type="string")
- * ),
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\MediaType(
- *             mediaType="multipart/form-data",
- *             @OA\Schema(
- *                 type="object",
- *                 properties={
  *                 },
  *             ),
  *         ),

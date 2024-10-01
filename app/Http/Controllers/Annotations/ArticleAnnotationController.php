@@ -73,6 +73,24 @@ namespace App\Http\Controllers\Annotations ;
 *),
 
 
+ * @OA\GET(
+ *     path="/api/articles/{id}",
+ *     summary="Details d'un article",
+ *     description="",
+ *         security={
+ *    {       "BearerAuth": {}}
+ *         },
+ * @OA\Response(response="200", description="OK"),
+ * @OA\Response(response="404", description="Not Found"),
+ * @OA\Response(response="500", description="Internal Server Error"),
+ *     @OA\Parameter(in="path", name="id", required=false, @OA\Schema(type="string")
+ * ),
+ *     @OA\Parameter(in="header", name="User-Agent", required=false, @OA\Schema(type="string")
+ * ),
+ *     tags={"Article"},
+*),
+
+
  * @OA\DELETE(
  *     path="/api/articles/{id}",
  *     summary="Supprimer un article",

@@ -133,10 +133,6 @@ namespace App\Http\Controllers\Annotations ;
  *             @OA\Schema(
  *                 type="object",
  *                 properties={
- *                     @OA\Property(property="libelle", type="string"),
- *                     @OA\Property(property="description", type="string"),
- *                     @OA\Property(property="superficie", type="string"),
- *                     @OA\Property(property="population", type="string"),
  *                     @OA\Property(property="image", type="string", format="binary"),
  *                 },
  *             ),

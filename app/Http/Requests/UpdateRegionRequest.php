@@ -27,7 +27,7 @@ class UpdateRegionRequest extends FormRequest
             'description' => 'sometimes|string|max:255',
             'superficie' => 'sometimes|integer',
             'population' => 'sometimes|integer',
-            'image' => 'sometimes|mimes:jpeg,jpg,png,gif|max:4048',
+            'image' => 'sometimes|file|mimetypes:image/jpeg,image/png,video/mp4,video/quicktime|max:50480',
         ];
     }
 

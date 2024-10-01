@@ -96,7 +96,9 @@ namespace App\Http\Controllers\Annotations ;
  * @OA\Response(response="400", description="Bad Request"),
  * @OA\Response(response="401", description="Unauthorized"),
  * @OA\Response(response="403", description="Forbidden"),
- *     @OA\Parameter(in="path", name="{% uuid 'v4' %}", required=false, @OA\Schema(type="string")
+ *     @OA\Parameter(in="path", name="id", required=false, @OA\Schema(type="string")
+ * ),
+ *     @OA\Parameter(in="path", name="commentaire", required=false, @OA\Schema(type="string")
  * ),
  *     @OA\Parameter(in="header", name="User-Agent", required=false, @OA\Schema(type="string")
  * ),

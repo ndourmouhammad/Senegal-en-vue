@@ -27,7 +27,7 @@ class StoreRegionRequest extends FormRequest
             'description' => 'required|string|max:255',
             'superficie' => 'required|integer',
             'population' => 'required|integer',
-            'image' => 'nullable|mimes:jpeg,jpg,png,gif|max:4048',
+            'image' => 'required|file|mimetypes:image/jpeg,image/png,video/mp4,video/quicktime|max:50480',
         ];
     }
     public function failedValidation(Validator $validator)

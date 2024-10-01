@@ -97,6 +97,17 @@ namespace App\Http\Controllers\Annotations ;
  * @OA\Response(response="500", description="Internal Server Error"),
  *     @OA\Parameter(in="header", name="User-Agent", required=false, @OA\Schema(type="string")
  * ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\MediaType(
+ *             mediaType="multipart/form-data",
+ *             @OA\Schema(
+ *                 type="object",
+ *                 properties={
+ *                 },
+ *             ),
+ *         ),
+ *     ),
  *     tags={"Site touristique"},
 *),
 
@@ -128,7 +139,6 @@ namespace App\Http\Controllers\Annotations ;
  *                     @OA\Property(property="heure_fermeture", type="string"),
  *                     @OA\Property(property="tarif_entree", type="string"),
  *                     @OA\Property(property="region_id", type="string"),
- *                     @OA\Property(property="user_id", type="string"),
  *                 },
  *             ),
  *         ),

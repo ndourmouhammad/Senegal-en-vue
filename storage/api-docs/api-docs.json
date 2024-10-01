@@ -68,6 +68,56 @@
                 ]
             }
         },
+        "/api/guides/{id}/sites": {
+            "get": {
+                "summary": "les sites d'un guide",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Guide"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
         "/api/guides/{id}": {
             "get": {
                 "summary": "Lister les informations d'un guide",
@@ -118,9 +168,54 @@
                 ]
             }
         },
-        "/api/nombre-sites": {
+        "/api/sites/nombre-sites": {
             "get": {
                 "summary": "Nombre de sites touristiques",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Dashboard"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/api/nbre-sites": {
+            "get": {
+                "summary": "Nombre de sites touristiques du plateforme",
                 "description": "",
                 "responses": {
                     "200": {
@@ -208,7 +303,52 @@
                 ]
             }
         },
-        "/api/evenements/nombre-termine": {
+        "/api/nombre-commandes": {
+            "get": {
+                "summary": "Nombre de  commande",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Dashboard"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/api/sites/nombre-termine": {
             "get": {
                 "summary": "Nombre de clients",
                 "description": "",
@@ -298,7 +438,7 @@
                 ]
             }
         },
-        "/api/evenements/nombre-evenements": {
+        "/api/nombre-evenements": {
             "get": {
                 "summary": "Nombre d'evenement",
                 "description": "",
@@ -601,6 +741,56 @@
                 ]
             }
         },
+        "/api/abonnements/{id}/status": {
+            "get": {
+                "summary": "voir le statut d'abonnement",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Abonnement"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
         "/api/abonnements/sent": {
             "get": {
                 "summary": "Voir les demandes envoyes",
@@ -819,7 +1009,7 @@
                                 }
                             },
                             "example": {
-                                "contenu": "commenttestmodif"
+                                "contenu": "c'estcarre"
                             }
                         }
                     }
@@ -933,7 +1123,12 @@
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "{% uuid 'v4' %}",
+                        "name": "id",
+                        "type": "string"
+                    },
+                    {
+                        "in": "path",
+                        "name": "commentaire",
                         "type": "string"
                     },
                     {
@@ -1738,6 +1933,11 @@
                 ],
                 "parameters": [
                     {
+                        "in": "path",
+                        "name": "id",
+                        "type": "string"
+                    },
+                    {
                         "in": "header",
                         "name": "User-Agent",
                         "type": "string"
@@ -2058,18 +2258,6 @@
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "libelle": {
-                                        "type": "string"
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    },
-                                    "superficie": {
-                                        "type": "string"
-                                    },
-                                    "population": {
-                                        "type": "string"
-                                    },
                                     "image": {
                                         "type": "string",
                                         "format": "binary"
@@ -2077,10 +2265,6 @@
                                 }
                             },
                             "example": {
-                                "libelle": "Diourbel",
-                                "description": "Diourbel est une région située dans le centre-ouest du Sénégal, faisant partie de la région historique du Baol. Elle est surtout connue pour son patrimoine religieux, notamment pour la ville sainte de Touba, le centre spirituel de la confrérie mouride.",
-                                "superficie": "4824",
-                                "population": "1500000",
                                 "image": {
                                     "type": "string",
                                     "format": "binary"
@@ -2222,6 +2406,54 @@
             }
         },
         "/api/articles/{id}": {
+            "get": {
+                "summary": "Details d'un article",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Article"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            },
             "delete": {
                 "summary": "Supprimer un article",
                 "description": "",
@@ -2725,7 +2957,18 @@
                         "name": "User-Agent",
                         "type": "string"
                     }
-                ]
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {}
+                            },
+                            "example": {}
+                        }
+                    }
+                }
             },
             "post": {
                 "summary": "Ajouter un site",
@@ -2805,24 +3048,20 @@
                                     },
                                     "region_id": {
                                         "type": "string"
-                                    },
-                                    "user_id": {
-                                        "type": "string"
                                     }
                                 }
                             },
                             "example": {
-                                "libelle": "Cascade de Dindefelo2",
-                                "description": "Les chutes de Dindefelo, situées dans la ville de Dindefelo, sont une attraction touristique et un parc du sud-est du Sénégal. Il est situé à quelques kilomètres de la frontière guinéenne. Les chutes font environ 100 mètres de haut.",
+                                "libelle": "Joal Fadiouth",
+                                "description": "Joal Fadiouth est une commune du Sénégal située à l’extrémité de la petite-côte, au sud-est de Dakar. Elle réunit en réalité deux villages.",
                                 "contenu": {
                                     "type": "string",
                                     "format": "binary"
                                 },
                                 "heure_ouverture": "00:00",
                                 "heure_fermeture": "23:59",
-                                "tarif_entree": "10000",
-                                "region_id": "1",
-                                "user_id": "1"
+                                "tarif_entree": "7000",
+                                "region_id": "1"
                             }
                         }
                     }
@@ -3483,8 +3722,8 @@
                                 }
                             },
                             "example": {
-                                "libelle": "",
-                                "description": "Diourbel est une région située dans le centre-ouest du Sénégal, faisant partie de la région historique du Baol. Elle est surtout connue pour son patrimoine religieux, notamment pour la ville sainte de Touba, le centre spirituel de la confrérie mouride.",
+                                "libelle": "Activité de safari au Sénégal",
+                                "description": "Vivez une aventure safari au cœur des réserves naturelles du Sénégal, en observant une faune diversifiée dans son habitat naturel.",
                                 "contenu": {
                                     "type": "string",
                                     "format": "binary"
@@ -3496,6 +3735,54 @@
             }
         },
         "/api/activites/{id}": {
+            "get": {
+                "summary": "afficher une activite",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Activite"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            },
             "delete": {
                 "summary": "Supprimer une activite",
                 "description": "",
@@ -4728,6 +5015,74 @@
                         }
                     }
                 }
+            },
+            "delete": {
+                "summary": "Supprimer un role",
+                "description": "",
+                "responses": {
+                    "204": {
+                        "description": "Deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Roles"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {}
+                            },
+                            "example": {}
+                        }
+                    }
+                }
             }
         },
         "/api/roles/{id}/permission": {
@@ -4801,74 +5156,6 @@
                             "example": {
                                 "permissionId": ""
                             }
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "summary": "Supprimer un role",
-                "description": "",
-                "responses": {
-                    "204": {
-                        "description": "Deleted successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Roles"
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "type": "string"
-                    },
-                    {
-                        "in": "header",
-                        "name": "User-Agent",
-                        "type": "string"
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {}
-                            },
-                            "example": {}
                         }
                     }
                 }
@@ -5208,26 +5495,26 @@
                                 }
                             },
                             "example": {
-                                "name": "",
-                                "email": "",
-                                "password": "",
-                                "password_confirmation": "",
+                                "name": "diarra",
+                                "email": "diarra@gmail.com",
+                                "password": "passer123",
+                                "password_confirmation": "passer123",
                                 "photo_profil": {
                                     "type": "string",
                                     "format": "binary"
                                 },
-                                "adresse": "",
-                                "telephone": "",
-                                "date_naissance": "",
-                                "langues": "",
-                                "numero_carte_guide": "",
+                                "adresse": "diourbel",
+                                "telephone": "781034562",
+                                "date_naissance": "2000-05-16",
+                                "langues": "Arabe",
+                                "numero_carte_guide": "16378",
                                 "carte_guide": {
                                     "type": "string",
                                     "format": "binary"
                                 },
-                                "note": "",
-                                "role": "",
-                                "genre": ""
+                                "note": "0",
+                                "role": "guide",
+                                "genre": "Femme"
                             }
                         }
                     }
@@ -5428,8 +5715,8 @@
                                 }
                             },
                             "example": {
-                                "email": "",
-                                "password": ""
+                                "email": "fatoumatadansoko61@gmail.com",
+                                "password": "passer123"
                             }
                         }
                     }
