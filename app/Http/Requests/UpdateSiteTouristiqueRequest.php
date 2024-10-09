@@ -23,7 +23,7 @@ class UpdateSiteTouristiqueRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'libelle' => 'sometimes|string|max:255',
+            'libelle' => 'sometimes',
             'description' => 'sometimes|string',
             'contenu' => 'sometimes|file|mimetypes:image/jpeg,image/png,video/mp4,video/quicktime|max:50480', // Permet des images ou vidéos
             'heure_ouverture' => 'sometimes|date_format:H:i:s',

@@ -24,7 +24,7 @@ class StoreSiteTouristiqueRequest extends FormRequest
     {
         return [
             'libelle' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'required',
             'contenu' => 'required|file|mimetypes:image/jpeg,image/png,video/mp4,video/quicktime|max:50480',
             'heure_ouverture' => 'required|date_format:H:i',
             'heure_fermeture' => 'required|date_format:H:i',

@@ -18,8 +18,8 @@ class Commande extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function site_touristique()
+    public function excursion()
     {
-        return $this->belongsTo(SiteTouristique::class);
+        return $this->belongsTo(Excursion::class);
     }
 }

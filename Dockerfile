@@ -30,6 +30,6 @@ CMD php artisan vendor:publish --provider="PHPOpenSourceSaver\JWTAuth\Providers\
     php artisan key:generate && \
     php artisan migrate:fresh && \
     php artisan jwt:secret && \
-    php artisan serve --host=0.0.0.0 --port=8181
+    php artisan serve --host=127.0.0.1 --port=8000
 
-EXPOSE 8181
+EXPOSE 8000

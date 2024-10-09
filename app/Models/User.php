@@ -63,10 +63,15 @@ class User extends Authenticatable implements JWTSubject
     }
 
     // Modèle User.php
-public function sites()
-{
-    return $this->hasMany(SiteTouristique::class, 'user_id'); // user_id pour lier les sites à l'utilisateur
-}
+    public function sites()
+    {
+        return $this->hasMany(SiteTouristique::class, 'user_id'); // user_id pour lier les sites à l'utilisateur
+    }
+
+    public function excursions()
+    {
+        return $this->hasMany(Excursion::class, 'excursion_id');
+    }
 
 
     /**
