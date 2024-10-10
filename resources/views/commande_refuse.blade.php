@@ -37,7 +37,7 @@
     <div class="email-container">
         <h1>Votre commande a été Refusée</h1>
         <p>Bonjour {{ $commande->user->name }},</p>
-        <p>Nous regrettons de vous informer que votre réservation pour <strong>"{{ $commande->site_touristique->libelle }}"</strong> a été refusée.</p>
+        <p>Nous regrettons de vous informer que votre réservation pour <strong>"{{ $commande->excursion->libelle }}"</strong> a été refusée.</p>
         
         <p>Nous nous excusons pour les éventuels désagréments et vous encourageons à essayer de nouveau ou à contacter notre service clientèle pour plus d'informations.</p>
         <p>Merci de votre compréhension.</p>

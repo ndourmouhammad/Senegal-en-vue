@@ -106,17 +106,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/{id}', [SiteTouristiqueController::class, 'update'])->middleware('permission:modifier un site touristique');
         Route::post('/', [SiteTouristiqueController::class, 'store'])->middleware('permission:ajouter un site touristique');
         Route::delete('/{id}', [SiteTouristiqueController::class, 'destroy'])->middleware('permission:supprimer un site touristique');
-        Route::post('/{siteId}/activities/{activityId}', [SiteTouristiqueController::class, 'ajouterUneActiviteAUnSite']);
-        Route::delete('/{siteId}/activities/{activityId}', [SiteTouristiqueController::class, ' supprimerUneActiviteDUnSite']);
         Route::get('/nombre-sites', [SiteTouristiqueController::class, 'nombreDeSites']);
-
-        // Commande
-        Route::post('/{id}/commande', [CommandeController::class, 'commander'])->middleware('permission:faire une commande');
-        Route::get('mes-commandes', [CommandeController::class, 'mesCommandes']);
-        Route::get('/{id}/commandes', [CommandeController::class, 'commandesSites']);
-        Route::post('commandes/{id}/confirmer', [CommandeController::class, 'confirmerCommande'])->middleware('permission:accepter une commande');
-        Route::post('commandes/{id}/refuser', [CommandeController::class, 'refuserCommande'])->middleware('permission:refuser une commande');
-        Route::get('nombre-termine', [CommandeController::class, 'countTermine']); 
     });
 
     // Excursions
@@ -129,9 +119,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/nombre-excursions', [ExcursionController::class, 'nombreDeExcursion']);
 
         // Commande
-        Route::post('/{id}/commande', [CommandeController::class, 'commander'])->middleware('permission:faire une commande');
+        Route::post('/{id}/commande', [CommandeController::class, 'commander']);
         Route::get('mes-commandes', [CommandeController::class, 'mesCommandes']);
-        Route::get('/{id}/commandes', [CommandeController::class, 'commandesSites']);
+        Route::get('/{id}/commandes', [CommandeController::class, 'commandesExcursion']);
         Route::post('commandes/{id}/confirmer', [CommandeController::class, 'confirmerCommande'])->middleware('permission:accepter une commande');
         Route::post('commandes/{id}/refuser', [CommandeController::class, 'refuserCommande'])->middleware('permission:refuser une commande');
         Route::get('nombre-termine', [CommandeController::class, 'countTermine']); 
@@ -192,7 +182,7 @@ Route::get('articles/{id}/reactions', [ArticleController::class, 'voirLesReactio
 Route::apiResource('/sites', SiteTouristiqueController::class)->only(['index', 'show']);
 
 Route::get('excursions/{excursion_id}/activities', [ExcursionController::class, 'listerLesActivitesDUneExcursion']);
-Route::get('/guides/{guideId}/sites', [SiteTouristiqueController::class, 'listerLesSitesDuGuide']);
+
 
 Route::apiResource('/evenements', EvenementController::class)->only(['index', 'show']);
 

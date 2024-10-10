@@ -22,10 +22,6 @@ class SiteTouristique extends Model
         return $this->belongsTo(Region::class);
     }
 
-    public function commandes()
-    {
-        return $this->hasMany(Commande::class);
-    }
 
     public function user()
     {

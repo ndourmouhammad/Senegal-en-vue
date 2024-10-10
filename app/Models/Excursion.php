@@ -27,5 +27,10 @@ class Excursion extends Model
     {
         return $this->belongsToMany(Activite::class, 'excursion_activite', 'excursion_id', 'activite_id');
     }
+
+    public function commandes()
+    {
+        return $this->hasMany(Commande::class);
+    }
     
 }

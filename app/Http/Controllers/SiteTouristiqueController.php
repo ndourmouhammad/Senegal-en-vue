@@ -81,57 +81,6 @@ class SiteTouristiqueController extends Controller
         return $this->customJsonResponse('Site supprime', $site);
     }
 
-    public function ajouterUneActiviteAUnSite(Request $request, $siteId, $activityId)
-    {
-        $site = SiteTouristique::findOrFail($siteId);
-        $site->activities()->attach($activityId);
-        return response()->json(['message' => 'Activité ajoutée au site touristique avec succès.']);
-    }
-
-    public function supprimerUneActiviteDUnSite(Request $request, $siteId, $activityId)
-    {
-        $site = SiteTouristique::findOrFail($siteId);
-        $site->activities()->detach($activityId);
-        return response()->json(['message' => 'Activité retirée du site touristique avec succès.']);
-    }
-
-    public function listerLesActivitesDunSite($siteId)
-    {
-        $site = SiteTouristique::findOrFail($siteId);
-        $activities = $site->activities;
-        return response()->json($activities);
-    }
-
-    // Nombre de sites touristiques ajoutés par le guide connecté
-    public function nombreDeSites()
-    {
-        // Obtenir l'ID de l'utilisateur connecté (guide)
-        $userId = auth()->id();
-
-        // Compter les sites touristiques ajoutés par le guide connecté
-        $count = SiteTouristique::where('user_id', $userId)->count();
-
-        // Retourner la réponse JSON personnalisée
-        return $this->customJsonResponse('Nombre de sites ajoutés par le guide connecté', $count);
-    }
-
-
-    // Lister les sites liees a un guide (User avec le role guide)
-    public function listerLesSitesDuGuide($guideId)
-    {
-        // Chercher l'utilisateur par ID
-        $guide = User::findOrFail($guideId);
-
-        // Vérifier si l'utilisateur a bien le rôle de "guide"
-        if (!$guide->hasRole('guide')) {
-            return response()->json(['message' => 'Cet utilisateur n\'a pas le rôle de guide.'], 403);
-        }
-
-        // Récupérer les sites associés à ce guide
-        $sites = $guide->sites;
-        return response()->json($sites);
-    }
-
     // Nombre de site 
     public function nombreDeSite()
     {

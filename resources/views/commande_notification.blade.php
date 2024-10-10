@@ -37,7 +37,7 @@
     <div class="email-container">
         <h1>Commande en cours de traitement</h1>
         <p>Bonjour {{ $commande->user->name }},</p>
-        <p>Nous vous informons que votre commande pour <strong>"{{ $commande->site_touristique->libelle }}"</strong> a bien été prise en compte.</p>
+        <p>Nous vous informons que votre commande pour <strong>"{{ $commande->excursion->libelle }}"</strong> a bien été prise en compte.</p>
         <p>Votre commande est actuellement en cours de traitement. Vous recevrez une notification dès que son statut évoluera.</p>
         <p>Merci de votre patience et de votre confiance.</p>
         

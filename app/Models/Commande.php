@@ -20,6 +20,6 @@ class Commande extends Model
 
     public function excursion()
     {
-        return $this->belongsTo(Excursion::class);
+        return $this->belongsTo(Excursion::class, 'id_excursion');
     }
 }

@@ -37,13 +37,13 @@
     <div class="email-container">
         <h1>Votre commande est confirmée</h1>
         <p>Bonjour {{ $commande->user->name }},</p>
-        <p>Nous avons le plaisir de vous informer que votre commande pour <strong>"{{ $commande->site_touristique->libelle }}"</strong> a été confirmée.</p>
+        <p>Nous avons le plaisir de vous informer que votre commande pour <strong>"{{ $commande->excursion->libelle }}"</strong> a été confirmée.</p>
         <p>Nous sommes impatients de vous accueillir lors de cet événement. Veuillez trouver ci-dessous les détails de votre commande :</p>
         <ul>
-            <li><strong>Événement :</strong> {{ $commande->site_touristique->libelle }}</li>
-            <li><strong>Heure début:</strong> {{ $commande->site_touristique->heure_ouverture }}</li>
-            <li><strong>Heure de fin :</strong> {{ $commande->site_touristique->heure_fermeture }}</li>
-            <li><strong>Prix :</strong> {{ $commande->site_touristique->tarif_entree }} FCFA</li>
+            <li><strong>Événement :</strong> {{ $commande->excursion->libelle }}</li>
+            <li><strong>Date début:</strong> {{ $commande->excursion->date_debut }}</li>
+            <li><strong>Date de fin :</strong> {{ $commande->excursion->date_fin }}</li>
+            <li><strong>Prix :</strong> {{ $commande->excursion->tarif_entree }} FCFA</li>
             <li><strong>Statut de la commande :</strong> Confirmé</li>
         </ul>
         <p>Si vous avez des questions ou des besoins particuliers, n'hésitez pas à nous contacter.</p>

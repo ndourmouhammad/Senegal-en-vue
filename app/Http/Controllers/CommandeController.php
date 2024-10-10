@@ -8,6 +8,7 @@ use App\Mail\CommandeAccepted;
 use App\Mail\CommandeNotification;
 use App\Mail\CommandeRefuse;
 use App\Models\Commande;
+use App\Models\Excursion;
 use App\Models\SiteTouristique;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -72,24 +73,24 @@ class CommandeController extends Controller
         //
     }
 
-    public function commander(Request $request, $site_historique_id)
+    public function commander(Request $request, $excursion_id)
 {
     // Vérifier si l'utilisateur a déjà réservé pour cet événement
-    $existingReservation = Commande::where('site_touristique_id', $site_historique_id)
+    $existingReservation = Commande::where('id_excursion', $excursion_id)
                                        ->where('user_id', auth()->id())
                                        ->first();
 
     if ($existingReservation) {
         return response()->json([
             "status" => false,
-            "message" => "Vous avez déjà réservé pour ce site historique.",
+            "message" => "Vous avez déjà réservé pour cet excursion.",
         ], 400);
     }
 
     // Récupérer le site historique pour vérifier le nombre de places disponibles
-    $site = SiteTouristique::find($site_historique_id);
+    $excursion = Excursion::find($excursion_id);
 
-    if (!$site) {
+    if (!$excursion) {
         return response()->json([
             "status" => false,
             "message" => "Site historique introuvable.",
@@ -123,7 +124,7 @@ class CommandeController extends Controller
 
     // Préparer les données pour la création
     $data = [
-        'site_touristique_id' => $site_historique_id,
+        'id_excursion' => $excursion_id,
         'user_id' => auth::id(),
         'statut' => $validated['status'],
         'date_commande' => now(),
@@ -148,7 +149,7 @@ class CommandeController extends Controller
 
 public function mesCommandes()
 {
-    $commandes = Commande::with('site_touristique')
+    $commandes = Commande::with('excursion')
         ->where('user_id', auth()->id())
         ->get();
 
@@ -159,9 +160,10 @@ public function mesCommandes()
     ], 200);
 }
 
-public function commandesSites($site_touristique_id)
+
+public function commandesExcursion($id_excursion)
 {
-    $commandes = Commande::where('site_touristique_id', $site_touristique_id)
+    $commandes = Commande::where('id_excursion', $id_excursion)
                                 ->whereIn('statut', ['termine', 'en cours']) // Filtrer par statut
                                 ->with('user:id,name,email,telephone') // Inclure seulement l'id et le nom de l'utilisateur
                                 ->get();
