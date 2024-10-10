@@ -189,5 +189,8 @@ Route::apiResource('/evenements', EvenementController::class)->only(['index', 's
 Route::get('nombre-commandes', [CommandeController::class, 'count']);
 Route::get('nombre-evenements', [EvenementController::class, 'count']);
 Route::get('nbre-sites', [SiteTouristiqueController::class, 'nombreDeSite']);
+Route::get('/sites/{id}/excursions', [SiteTouristiqueController::class, 'excursionsParSite']);
+
+
 Route::get('/nombre-guide', [AuthController::class, 'nombreGuide']);
 Route::get('/nombre-touriste', [AuthController::class, 'nombreTouriste']);

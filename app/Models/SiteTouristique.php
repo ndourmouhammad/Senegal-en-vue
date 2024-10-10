@@ -35,6 +35,6 @@ class SiteTouristique extends Model
 
     public function excursions()
     {
-        return $this->hasMany(Activite::class);
+        return $this->hasMany(Excursion::class);
     }
 }

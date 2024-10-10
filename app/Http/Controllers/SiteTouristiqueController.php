@@ -26,7 +26,7 @@ class SiteTouristiqueController extends Controller
      */
     public function store(StoreSiteTouristiqueRequest $request)
     {
-        
+
         $site = new SiteTouristique();
         $site->fill($request->validated());
         if ($request->hasFile('contenu')) {
@@ -86,5 +86,18 @@ class SiteTouristiqueController extends Controller
     {
         $count = SiteTouristique::count();
         return $this->customJsonResponse('Nombre de site', $count);
+    }
+
+    public function excursionsParSite($siteId)
+    {
+        // Récupère le site touristique avec les excursions associées
+        $site = SiteTouristique::with('excursions')->find($siteId);
+
+        // Vérifiez que le site existe
+        if (!$site) {
+            return response()->json(['message' => 'Site not found'], 404);
+        }
+
+        return $this->customJsonResponse('Excursions du site', $site->excursions);
     }
 }
