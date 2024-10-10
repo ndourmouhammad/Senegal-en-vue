@@ -16,7 +16,7 @@ class Activite extends Model
 
     protected $table = 'activites'; // Nom de la table si différent
 
-    // La méthode pour définir la relation many-to-many avec SiteTouristique
+   
     public function excursions()
     {
         return $this->belongsToMany(Excursion::class, 'excursion_activite', 'activite_id', 'excursion_id');

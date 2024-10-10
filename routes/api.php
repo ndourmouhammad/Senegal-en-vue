@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AbonnementController;
+use App\Models\Commande;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -8,14 +8,15 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ActiviteController;
-use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\CommandeController;
+use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\EvenementController;
+use App\Http\Controllers\ExcursionController;
+use App\Http\Controllers\AbonnementController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\CommentaireController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SiteTouristiqueController;
-use App\Models\Commande;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -118,6 +119,24 @@ Route::middleware('auth')->group(function () {
         Route::get('nombre-termine', [CommandeController::class, 'countTermine']); 
     });
 
+    // Excursions
+    Route::prefix('excursions')->group(function () {
+        Route::post('/{id}', [ExcursionController::class, 'update']);
+        Route::post('/', [ExcursionController::class, 'store']);
+        Route::delete('/{id}', [ExcursionController::class, 'destroy']);
+        Route::post('/{excursion_id}/activities/{activite_id}', [ExcursionController::class, 'ajouterUneActiviteAUneExcursion']);
+        Route::delete('/{excursion_id}/activities/{activite_id}', [ExcursionController::class, 'supprimerUneActiviteAUneExcursion']);
+        Route::get('/nombre-excursions', [ExcursionController::class, 'nombreDeExcursion']);
+
+        // Commande
+        Route::post('/{id}/commande', [CommandeController::class, 'commander'])->middleware('permission:faire une commande');
+        Route::get('mes-commandes', [CommandeController::class, 'mesCommandes']);
+        Route::get('/{id}/commandes', [CommandeController::class, 'commandesSites']);
+        Route::post('commandes/{id}/confirmer', [CommandeController::class, 'confirmerCommande'])->middleware('permission:accepter une commande');
+        Route::post('commandes/{id}/refuser', [CommandeController::class, 'refuserCommande'])->middleware('permission:refuser une commande');
+        Route::get('nombre-termine', [CommandeController::class, 'countTermine']); 
+    });
+
     // evenement
     Route::prefix('evenements')->group(function () {
         Route::post('/{id}', [EvenementController::class, 'update'])->middleware('permission:modifier un evenement');
@@ -160,6 +179,8 @@ Route::apiResource('/regions', RegionController::class)->only(['index','show']);
 
 Route::apiResource('/activites', ActiviteController::class)->only(['index']);
 
+Route::apiResource('/excursions', ExcursionController::class)->only(['index', 'show']);
+
 Route::apiResource('/categories', CategorieController::class)->only(['index']);
 
 Route::apiResource('/articles', ArticleController::class)->only(['index', 'show']);
@@ -170,7 +191,7 @@ Route::get('articles/{id}/reactions', [ArticleController::class, 'voirLesReactio
 
 Route::apiResource('/sites', SiteTouristiqueController::class)->only(['index', 'show']);
 
-Route::get('sites/{siteId}/activities', [SiteTouristiqueController::class, 'listerLesActivitesDunSite']);
+Route::get('excursions/{excursion_id}/activities', [ExcursionController::class, 'listerLesActivitesDUneExcursion']);
 Route::get('/guides/{guideId}/sites', [SiteTouristiqueController::class, 'listerLesSitesDuGuide']);
 
 Route::apiResource('/evenements', EvenementController::class)->only(['index', 'show']);

@@ -23,7 +23,7 @@ class Excursion extends Model
     }
 
     // La méthode pour définir la relation many-to-many avec Activite
-    public function activities()
+    public function activites()
     {
         return $this->belongsToMany(Activite::class, 'excursion_activite', 'excursion_id', 'activite_id');
     }

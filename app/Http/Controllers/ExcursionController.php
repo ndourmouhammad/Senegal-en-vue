@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Models\Excursion;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreExcursionRequest;
 use App\Http\Requests\UpdateExcursionRequest;
-use App\Models\Excursion;
 
 class ExcursionController extends Controller
 {
@@ -13,54 +16,111 @@ class ExcursionController extends Controller
      */
     public function index()
     {
-        //
+        $excursions = Excursion::all();
+        return $this->customJsonResponse('Liste des excursions', $excursions);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreExcursionRequest $request)
     {
-        //
+        $excursion = new Excursion();
+        $excursion->fill($request->validated());
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('public/excursions');
+            $excursion->image = str_replace('public/', '', $imagePath);
+        }
+        if ($request->hasFile('contenu')) {
+            $contenuPath = $request->file('contenu')->store('public/excursions');
+            $excursion->contenu = str_replace('public/', '', $contenuPath);
+        }
+        $excursion->user_id = auth()->id();
+        $excursion->save();
+        return $this->customJsonResponse('Excursion ajoute', $excursion);
+        
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Excursion $excursion)
+    public function show($id)
     {
-        //
+        $excursion = Excursion::findOrfail($id);
+        if (!$excursion) {
+            return response()->json(['message' => 'Excursion nonTrouve'], 404);
+        }
+        return $this->customJsonResponse('Excursion', $excursion);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Excursion $excursion)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateExcursionRequest $request, Excursion $excursion)
+    public function update(UpdateExcursionRequest $request, $id)
     {
-        //
+        $excursion = Excursion::findOrfail($id);
+        $excursion->fill($request->validated());
+        if ($request->hasFile('image')) {
+            if ($excursion->image) {
+                Storage::delete($excursion->image);
+            }
+            $imagePath = $request->file('image')->store('public/excursions');
+            $excursion->image = str_replace('public/', '', $imagePath);
+        }
+        if ($request->hasFile('contenu')) {
+            if ($excursion->contenu) {
+                Storage::delete($excursion->contenu);
+            }
+            $contenuPath = $request->file('contenu')->store('public/excursions');
+            $excursion->contenu = str_replace('public/', '', $contenuPath);
+        }
+        $excursion->update();
+        return $this->customJsonResponse('Excursion modifié', $excursion);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Excursion $excursion)
+    public function destroy($id)
     {
-        //
+        $excursion = Excursion::findOrfail($id);
+        $excursion->delete();
+        return $this->customJsonResponse('Excursion supprimé', $excursion);
     }
+
+    // Ajouter une activite à une excursion
+    public function ajouterUneActiviteAUneExcursion(Request $request, $excursion_id, $activite_id)
+    {
+        $excursion = Excursion::findOrfail($excursion_id);
+        $excursion->activites()->attach($activite_id);
+        return $this->customJsonResponse('Activite ajoutée', $excursion);
+    }
+
+    // Supprimer une activite d'une excursion
+    public function supprimerUneActiviteAUneExcursion(Request $request, $excursion_id, $activite_id)
+    {
+        $excursion = Excursion::findOrfail($excursion_id);
+        $excursion->activites()->detach($activite_id);
+        return $this->customJsonResponse('Activite supprimée', $excursion);
+    }
+
+    // Lister les activites d'une excursion
+    public function listerLesActivitesDUneExcursion($excursion_id)
+    {
+        $excursion = Excursion::findOrfail($excursion_id);
+        $activites = $excursion->activites;
+        return $this->customJsonResponse('Liste des activites', $activites);
+    }
+
+    // Nombre de excursions
+    public function nombreDeExcursion()
+    {
+        $userId = auth()->id();
+        $count = Excursion::where('user_id', $userId)->count();
+        return $this->customJsonResponse('Nombre de excursions', $count);
+    }
+
+    
 }

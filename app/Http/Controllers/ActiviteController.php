@@ -18,13 +18,6 @@ class ActiviteController extends Controller
         return $this->customJsonResponse('List des activites', $activites);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -55,13 +48,7 @@ class ActiviteController extends Controller
         return $this->customJsonResponse('activite', $activite);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Activite $activite)
-    {
-        //
-    }
+    
 
     /**
      * Update the specified resource in storage.
