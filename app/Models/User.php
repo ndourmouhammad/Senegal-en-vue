@@ -70,9 +70,10 @@ class User extends Authenticatable implements JWTSubject
 
     public function excursions()
     {
-        return $this->hasMany(Excursion::class, 'excursion_id');
+        return $this->hasMany(Excursion::class, 'user_id');
     }
 
+    
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

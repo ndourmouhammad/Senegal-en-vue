@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\User;
 use App\Models\Excursion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -122,5 +123,20 @@ class ExcursionController extends Controller
         return $this->customJsonResponse('Nombre de excursions', $count);
     }
 
+    // Lister les sites liees a un guide (User avec le role guide)
+    public function listerLesExcursionsDuGuide($guideId)
+    {
+       // Chercher l'utilisateur par ID
+    $guide = User::findOrFail($guideId);
+
+    // Vérifier si l'utilisateur a bien le rôle de "guide"
+    if (!$guide->hasRole('guide')) {
+        return response()->json(['message' => 'Cet utilisateur n\'a pas le rôle de guide.'], 403);
+    }
+
+    
+    $excursions = $guide->excursions;
+        return response()->json($excursions);
+    }
     
 }

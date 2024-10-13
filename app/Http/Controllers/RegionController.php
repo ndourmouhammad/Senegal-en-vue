@@ -94,4 +94,12 @@ class RegionController extends Controller
         $region->delete();
         return $this->customJsonResponse('Region supprimé', $region);
     }
+
+    // Sites associeés à une region
+    public function sites($libelle)
+    {
+        $region = Region::where('libelle', $libelle)->firstOrFail();
+        $sites = $region->sites_touristiques;
+        return $this->customJsonResponse('Liste des sites', $sites);
+    }
 }

@@ -15,6 +15,6 @@ class Region extends Model
     // Les relations entre les autres models
     public function sites_touristiques()
     {
-        return $this->hasMany(Activite::class);
+        return $this->hasMany(SiteTouristique::class);
     }
 }

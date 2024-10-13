@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('libelle');
             $table->text('description');
             $table->string('contenu');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->date('date_debut');
             $table->date('date_fin');
             $table->integer('tarif_entree');

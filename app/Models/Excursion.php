@@ -32,5 +32,10 @@ class Excursion extends Model
     {
         return $this->hasMany(Commande::class);
     }
+     // Relation inverse vers l'utilisateur (guide)
+     public function guide()
+     {
+         return $this->belongsTo(User::class, 'guide_id');
+     }
     
 }

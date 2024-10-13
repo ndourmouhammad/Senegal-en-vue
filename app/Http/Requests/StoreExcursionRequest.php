@@ -26,7 +26,7 @@ class StoreExcursionRequest extends FormRequest
             'libelle' => 'required|string|max:255',
             'description' => 'required',
             'contenu' => 'required|file|mimetypes:image/jpeg,image/png,video/mp4,video/quicktime|max:50480',
-            'image' => 'required|mimes:jpeg,jpg,png,gif|max:5048',
+            'image' => 'nullable|mimes:jpeg,jpg,png,gif|max:5048',
             'date_debut' => 'required|date|before_or_equal:date_fin|after_or_equal:today',
             'date_fin' => 'required|date|after_or_equal:date_debut',
             'tarif_entree' => 'required|integer|min:0',

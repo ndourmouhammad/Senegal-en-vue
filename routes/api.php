@@ -17,6 +17,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\CommentaireController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SiteTouristiqueController;
+use App\Models\Excursion;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -103,9 +104,9 @@ Route::middleware('auth')->group(function () {
 
     // Site Touristique
     Route::prefix('sites')->group(function () {
-        Route::post('/{id}', [SiteTouristiqueController::class, 'update'])->middleware('permission:modifier un site touristique');
-        Route::post('/', [SiteTouristiqueController::class, 'store'])->middleware('permission:ajouter un site touristique');
-        Route::delete('/{id}', [SiteTouristiqueController::class, 'destroy'])->middleware('permission:supprimer un site touristique');
+        Route::post('/{id}', [SiteTouristiqueController::class, 'update']);
+        Route::post('/', [SiteTouristiqueController::class, 'store']);
+        Route::delete('/{id}', [SiteTouristiqueController::class, 'destroy']);
         Route::get('/nombre-sites', [SiteTouristiqueController::class, 'nombreDeSites']);
     });
 
@@ -194,3 +195,7 @@ Route::get('/sites/{id}/excursions', [SiteTouristiqueController::class, 'excursi
 
 Route::get('/nombre-guide', [AuthController::class, 'nombreGuide']);
 Route::get('/nombre-touriste', [AuthController::class, 'nombreTouriste']);
+Route::get('/guides/{guideId}/excursions', [ExcursionController::class, 'listerLesExcursionsDuGuide']);
+
+// les sites associeés à une region
+Route::get('/regions/{libelle}/sites', [RegionController::class, 'sites']);
