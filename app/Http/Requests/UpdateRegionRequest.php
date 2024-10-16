@@ -24,7 +24,7 @@ class UpdateRegionRequest extends FormRequest
     {
         return [
             'libelle' => 'sometimes|string|max:255',
-            'description' => 'sometimes|string|max:255',
+            'description' => 'sometimes',
             'superficie' => 'sometimes|integer',
             'population' => 'sometimes|integer',
             'image' => 'sometimes|file|mimetypes:image/jpeg,image/png,video/mp4,video/quicktime|max:50480',

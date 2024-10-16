@@ -24,7 +24,7 @@ class StoreRegionRequest extends FormRequest
     {
         return [
             'libelle' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            'description' => 'required',
             'superficie' => 'required|integer',
             'population' => 'required|integer',
             'image' => 'required|file|mimetypes:image/jpeg,image/png,video/mp4,video/quicktime|max:50480',
